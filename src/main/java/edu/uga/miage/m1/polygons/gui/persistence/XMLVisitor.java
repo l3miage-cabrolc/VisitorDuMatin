@@ -3,6 +3,9 @@ package edu.uga.miage.m1.polygons.gui.persistence;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
@@ -11,11 +14,13 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class XMLVisitor implements Visitor {
+public class XMLVisitor implements Visitor, Serializable {
+
+
+    private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
     private String representation;
 
-    
 
     public XMLVisitor() {
 
@@ -23,7 +28,6 @@ public class XMLVisitor implements Visitor {
 
        
     }
-
 
     @Override
     public void visit(Circle circle) {
@@ -43,22 +47,16 @@ public class XMLVisitor implements Visitor {
     }
 
 
-    public void save() throws IOException{
+    public void save(){
 
         File file = new File("description.xml");
 
-        FileWriter fileWriter = null;
-
-            fileWriter =  new FileWriter(file);
-      
-        try {
+        try( FileWriter fileWriter =  new FileWriter(file)) {
             fileWriter.write(representation);
             fileWriter.flush();
-
         } catch (IOException e) {
-        }
-
-        fileWriter.close();
+            LOGGER.log(Level.SEVERE, "Erreur d'ecriture dans le fichier");
+        }  
     }
 
     /**

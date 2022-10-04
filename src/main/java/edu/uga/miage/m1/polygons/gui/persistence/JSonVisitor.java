@@ -3,7 +3,10 @@ package edu.uga.miage.m1.polygons.gui.persistence;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
@@ -12,10 +15,12 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JSonVisitor implements Visitor {
+public class JSonVisitor implements Visitor, Serializable {
 
 
-    private class Shape{
+    private static  final Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
+
+    private class Shape implements Serializable{
         private String type;
         int x;
         int y;
@@ -69,31 +74,22 @@ public class JSonVisitor implements Visitor {
 
 
 
-    public void save() throws IOException{
+    public void save() {
 
 
        File file = new File("description.json");
-
-       FileWriter fileWriter = null;
-
-
        for(int i=0; i < listOfShapes.size()-1; i++){
             representation.append(representation + "{\n\"type\": \"" + listOfShapes.get(i).getType() + "\",\n\"x\": " + listOfShapes.get(i).getX() + ",\n\"y\": " + listOfShapes.get(i).getY() + "\n},");
        }
 
        representation.insert(0, "{\"shapes\" : [\n" );
        representation.append("{\n\"type\": \"" + listOfShapes.get(listOfShapes.size()-1).getType() + "\",\n\"x\": " + listOfShapes.get(listOfShapes.size()-1).getX() + ",\n\"y\": " + listOfShapes.get(listOfShapes.size()-1).getY() + "\n}" +  "] }");
-
-
-        fileWriter =  new FileWriter(file);
-        
-        try {
+        try(FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(representation.toString());
             fileWriter.flush();
-
         } catch (IOException e) {
+           LOGGER.log(Level.SEVERE, "Erreur d'ecriture dans le fichier");
         }
-        fileWriter.close();
         
     }
 

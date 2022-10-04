@@ -9,10 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -49,14 +50,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private JLabel mLabel;
 
-    private ActionListener m_reusableActionListener = new ShapeActionListener();
+    private ShapeActionListener mReusableActionListener = new ShapeActionListener();
 
-    private ActionListener saveJson = new JsonSaveActionListener();
-    private ActionListener saveXML = new XMLSaveActionListener();
+    private JsonSaveActionListener saveJson = new JsonSaveActionListener();
+    private XMLSaveActionListener saveXML = new XMLSaveActionListener();
 
-    private JSonVisitor jsonVisitor = new JSonVisitor();
+    private static JSonVisitor jsonVisitor = new JSonVisitor();
 
-   private XMLVisitor xmlVisitor = new XMLVisitor();
+   private static XMLVisitor xmlVisitor = new XMLVisitor();
 
     /**
      * Tracks buttons to manage the background.
@@ -68,6 +69,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param frameName
      */
     public JDrawingFrame(String frameName) {
+
+        
         super(frameName);
 
     
@@ -117,7 +120,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         button.setBorderPainted(false);
         mButtons.put(shape, button);
         button.setActionCommand(shape.toString());
-        button.addActionListener(m_reusableActionListener);
+        button.addActionListener(mReusableActionListener);
         if (mSelected == null) {
             button.doClick();
         }
@@ -158,9 +161,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 default:
                     System.out.println("No shape named " + mSelected);
             }
-        
-            
-
         }
     }
 
@@ -222,10 +222,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * the drawing frame's currently selected shape when receiving
      * an action event.
      */
-    private class ShapeActionListener implements ActionListener {
+    private class ShapeActionListener implements ActionListener, Serializable {
 
         public void actionPerformed(ActionEvent evt) {
-            // Itère sur tous les boutons
+            // ItÃ¨re sur tous les boutons
             Iterator<Shapes> keys = mButtons.keySet().iterator();
             while (keys.hasNext()) {
                 Shapes shape = keys.next();
@@ -240,29 +240,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         }
     }
-
-
-    private class JsonSaveActionListener implements ActionListener {
+    private class JsonSaveActionListener implements ActionListener, Serializable {
         @Override
         public void actionPerformed(ActionEvent e) {
-                try {
                     jsonVisitor.save();
-                } catch (IOException e1) {
-                }
+
         }
     }
-
-    private class XMLSaveActionListener implements ActionListener{
+    private class XMLSaveActionListener implements ActionListener, Serializable{
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
                 xmlVisitor.save();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         }
     }
-
-
-    
 }

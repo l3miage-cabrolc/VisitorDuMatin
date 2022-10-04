@@ -6,10 +6,10 @@ package edu.uga.miage.m1.polygons.gui.persistence;
  *
  */
 public interface Visitable {
-       
-    /**
-     * Accept a visitor.
-     * @param visitor 
-     */
-    void accept(Visitor visitor);
+	   
+	/**
+	 * Accept a visitor.
+	 * @param visitor 
+	 */
+	void accept(Visitor visitor);
 }
