@@ -10,9 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,12 +56,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private static JSonVisitor jsonVisitor = new JSonVisitor();
 
-   private static XMLVisitor xmlVisitor = new XMLVisitor();
+    private static XMLVisitor xmlVisitor = new XMLVisitor();
 
     /**
      * Tracks buttons to manage the background.
      */
-    private Map<Shapes, JButton> mButtons = new HashMap<>();
+    private EnumMap<Shapes, JButton> mButtons = new EnumMap<>(Shapes.class);
 
     /**
      * Default constructor that populates the main window.
