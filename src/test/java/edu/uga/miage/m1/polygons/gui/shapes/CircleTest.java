@@ -44,13 +44,13 @@ class CircleTest {
 
 			@Override
 			public void visit(Square square) {
-				// TODO Auto-generated method stub
+				counterVisitorCircle++;
 				
 			}
 
 			@Override
 			public void visit(Triangle triangle) {
-				// TODO Auto-generated method stub
+				counterVisitorCircle++;
 				
 			}
 			
