@@ -2,5 +2,5 @@ projectKey=fr.uga.miage.m1:Persistence_gX_Y
 serverUrl=http://im2ag-sonar.u-ga.fr:9000
 serverVersion=9.1.0.47736
 dashboardUrl=http://im2ag-sonar.u-ga.fr:9000/dashboard?id=fr.uga.miage.m1%3APersistence_gX_Y
-ceTaskId=AYOtnj81rS4xG_Gg8rd8
-ceTaskUrl=http://im2ag-sonar.u-ga.fr:9000/api/ce/task?id=AYOtnj81rS4xG_Gg8rd8
+ceTaskId=AYOxVHKDrS4xG_Gg8reK
+ceTaskUrl=http://im2ag-sonar.u-ga.fr:9000/api/ce/task?id=AYOxVHKDrS4xG_Gg8reK

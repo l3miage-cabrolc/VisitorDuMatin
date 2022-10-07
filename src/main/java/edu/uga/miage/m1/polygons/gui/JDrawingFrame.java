@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
@@ -81,7 +82,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.setMinimumSize(new Dimension(400, 400));
         mPanel.addMouseListener(this);
         mPanel.addMouseMotionListener(this);
-        mLabel = new JLabel(" ", JLabel.LEFT);
+        mLabel = new JLabel(" ", SwingConstants.LEFT);
         // Fills the panel
         setLayout(new BorderLayout());
         add(mToolBar, BorderLayout.NORTH);
@@ -168,6 +169,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseEntered(MouseEvent evt) {
+        //Implements an empty method for the <tt>MouseListener</tt> interface.
     }
 
     /**
@@ -185,6 +187,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
+        //Implements method for the <tt>MouseListener</tt> interface to initiate
+        //shape dragging.
     }
 
     /**
@@ -193,6 +197,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
+        //Implements method for the <tt>MouseListener</tt> interface to complete
+        //shape dragging.
     }
 
     /**
@@ -201,6 +207,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseDragged(MouseEvent evt) {
+        //Implements method for the <tt>MouseMotionListener</tt> interface to
+        //move a dragged shape.
     }
 
     /**
