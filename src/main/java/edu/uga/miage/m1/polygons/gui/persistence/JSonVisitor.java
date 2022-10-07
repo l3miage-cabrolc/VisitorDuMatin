@@ -88,7 +88,7 @@ public class JSonVisitor implements Visitor, Serializable {
             fileWriter.write(representation.toString());
             fileWriter.flush();
         } catch (IOException e) {
-           LOGGER.log(Level.SEVERE, "Erreur d'ecriture dans le fichier");
+           LOGGER.log(Level.SEVERE, "Erreur d ecriture dans le fichier");
         }
         
     }
