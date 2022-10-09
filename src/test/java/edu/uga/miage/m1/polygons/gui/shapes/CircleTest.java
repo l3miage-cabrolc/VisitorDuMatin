@@ -16,6 +16,7 @@ class CircleTest {
 	
 	private int counterVisitorCircle;
 
+
 	@Test
 	void test_getters() {
 		Circle c = new Circle(0, 0);
@@ -44,15 +45,17 @@ class CircleTest {
 
 			@Override
 			public void visit(Square square) {
-				counterVisitorCircle++;
+				// ne rien faire
 				
 			}
 
 			@Override
 			public void visit(Triangle triangle) {
-				counterVisitorCircle++;
+				// ne rien faire
 				
 			}
+
+			
 			
 		};
 		
