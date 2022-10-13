@@ -69,6 +69,7 @@ public class JSonVisitor implements Visitor, Serializable {
     public void visit(Triangle triangle) {
 
         listOfShapes.add(new Shape("square", triangle.getX(), triangle.getX()));
+        
 
     }
 
@@ -79,7 +80,7 @@ public class JSonVisitor implements Visitor, Serializable {
 
        File file = new File("description.json");
        for(int i=0; i < listOfShapes.size()-1; i++){
-            representation.append(representation + "{\n\"type\": \"" + listOfShapes.get(i).getType() + "\",\n\"x\": " + listOfShapes.get(i).getX() + ",\n\"y\": " + listOfShapes.get(i).getY() + "\n},");
+            
        }
 
        representation.insert(0, "{\"shapes\" : [\n" );

@@ -9,7 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 @ExtendWith(MockitoExtension.class)
 class CircleTest {
@@ -61,5 +63,34 @@ class CircleTest {
 		
 		c.accept(v);
 		assertEquals(1, counterVisitorCircle);
+	}
+
+	@Test
+	void test_Jsonvisitor(){
+		Circle c = new Circle(0,0);
+
+		JSonVisitor visitor = new JSonVisitor();
+
+		visitor.visit(c);
+
+		visitor.save();
+
+		assertEquals("{\"shapes\" : [\n{\n\"type\": \"circle\",\n\"x\": " + c.getX() + ",\n\"y\": " + c.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
+	}
+
+
+	@Test 
+	void test_XMLVisitor(){
+
+		Circle circle = new Circle(0,0);
+
+		XMLVisitor visitor = new XMLVisitor();
+
+		visitor.visit(circle);
+
+		visitor.save();
+
+		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>circle</type>\n<x>" + circle.getX() +"</x>\n<y>" + circle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
+
 	}
 }
