@@ -6,11 +6,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 
 class TriangleTest {
@@ -65,5 +65,32 @@ class TriangleTest {
 		assertEquals(1, counterVisitorTriangle);
 	}
 
+	@Test
+    void test_Jsonvisitor(){
+        Triangle t = new Triangle(0,0);
 
+        JSonVisitor visitor = new JSonVisitor();
+
+        visitor.visit(t);
+
+        visitor.save();
+
+        assertEquals("{\"shapes\" : [\n{\n\"type\": \"triangle\",\n\"x\": " + t.getX() + ",\n\"y\": " + t.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
+    }
+
+
+    @Test 
+    void test_XMLVisitor(){
+
+        Triangle triangle = new Triangle(0,0);
+
+        XMLVisitor visitor = new XMLVisitor();
+
+        visitor.visit(triangle);
+
+        visitor.save();
+
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>triangle</type>\n<x>" + triangle.getX() +"</x>\n<y>" + triangle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
+
+    }
 }

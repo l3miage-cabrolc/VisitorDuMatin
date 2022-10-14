@@ -12,6 +12,8 @@ import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,6 +41,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         SQUARE, TRIANGLE, CIRCLE
     }
+    
+    private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
     private static final long serialVersionUID = 1L;
 
@@ -159,7 +163,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     xmlVisitor.visit(square);
                     break;
                 default:
-                    System.out.println("No shape named " + mSelected);
+                    LOGGER.log(Level.SEVERE, "No shape named {0} ", mSelected);
             }
         }
     }
