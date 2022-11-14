@@ -18,8 +18,8 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 public class XMLVisitor implements Visitor, Serializable {
 
     private static final String BEGIN_REPR = "<shape>\n<type>";
-    private static final String MIDDLE_REPR = "</x>\\n<y>";
-    private static final String END_REPR = "</y>\\n</shape>\\n";
+    private static final String MIDDLE_REPR = "</x>\n<y>";
+    private static final String END_REPR = "</y>\n</shape>\n";
     
     private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 

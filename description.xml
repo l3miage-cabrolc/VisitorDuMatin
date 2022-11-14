@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <shape>
 <type>square</type>
-<x>49</x>\n<y>59</y>\n</shape>\n<shape>
-<type>triangle</type>
-<x>155</x>\n<y>155</y>\n</shape>\n<shape>
-<type>circle</type>
-<x>375</x>\n<y>4</y>\n</shape>\n
+<x>0</x>
+<y>0</y>
+</shape>
