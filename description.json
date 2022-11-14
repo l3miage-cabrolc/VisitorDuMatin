@@ -1,10 +1,18 @@
 {"shapes" : [
 {
-<<<<<<< HEAD
 "type": "square",
-=======
+"x": 49,
+"y": 49
+},{
+"type": "square",
+"x": 49,
+"y": 49
+},{
 "type": "triangle",
->>>>>>> refs/remotes/origin/main
-"x": 0,
-"y": 0
+"x": 155,
+"y": 155
+},{
+"type": "circle",
+"x": 375,
+"y": 375
 }] }

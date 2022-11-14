@@ -38,7 +38,6 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
 
     private enum Shapes {
-
         SQUARE, TRIANGLE, CIRCLE
     }
     
@@ -73,10 +72,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param frameName
      */
     public JDrawingFrame(String frameName) {
-
-        
         super(frameName);
-
     
         // Instantiates components
         mToolBar = new JToolBar("Toolbar");
