@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -16,39 +17,23 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor, Serializable {
 
-    private static final String MIDDLE_REPR = "</x>\n<y>";
-    private static final String END_REPR = "</y>\n</shape>\n";
+    private static final String BEGIN_REPR = "<shape>\n<type>";
+    private static final String MIDDLE_REPR = "</x>\\n<y>";
+    private static final String END_REPR = "</y>\\n</shape>\\n";
     
     private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
     private String representation;
 
-
     public XMLVisitor() {
-
         this.representation = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
-
-       
     }
 
     @Override
-    public void visit(Circle circle) {
-        representation = representation + "<shape>\n<type>circle</type>\n<x>" + circle.getX() + MIDDLE_REPR + circle.getY() + END_REPR;
-
+    public void visit(SimpleShape simpleShape) {
+        representation = representation + BEGIN_REPR + simpleShape.getClassName() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
     }
-
-    @Override
-    public void visit(Square square) {
-        representation = representation + "<shape>\n<type>square</type>\n<x>" + square.getX() + MIDDLE_REPR + square.getY() + END_REPR;
-
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        representation = representation + "<shape>\n<type>triangle</type>\n<x>" + triangle.getX() + MIDDLE_REPR + triangle.getY() + END_REPR;
-    }
-
-
+    
     public void save(){
 
         File file = new File("description.xml");

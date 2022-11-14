@@ -16,7 +16,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 class TriangleTest {
 
-
+/*
 	private int counterVisitorTriangle;
 
 
@@ -25,6 +25,13 @@ class TriangleTest {
 		Triangle t = new Triangle(0, 0);
 		assertEquals(0, t.getX());
 		assertEquals(0, t.getY());
+	}
+	
+	@Test
+	void test_visit_with_mock(@Mock Visitor v) {
+		Triangle t = new Triangle(0, 0);		
+		t.accept(v);
+		verify(v, times(1)).visit(t);
 	}
 
 	@Test
@@ -86,5 +93,5 @@ class TriangleTest {
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>triangle</type>\n<x>" + triangle.getX() +"</x>\n<y>" + triangle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
-    }
+    }*/
 }

@@ -27,7 +27,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 /**
  * This inner class implements the triangle <tt>SimpleShape</tt> service.
@@ -35,15 +34,11 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Triangle implements SimpleShape, Visitable {
-
-    int x;
-
-    int y;
+public class Triangle extends SimpleShape implements Visitable {
 
     public Triangle(int x, int y) {
-        x = x - 25;
-        y = y - 25;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -51,6 +46,7 @@ public class Triangle implements SimpleShape, Visitable {
      * the shape.
      * @param g2 The graphics object used for painting.
      */
+    @Override
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint(x, y, Color.GREEN, (float)x + 50, y, Color.WHITE);
@@ -68,20 +64,5 @@ public class Triangle implements SimpleShape, Visitable {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(polygon);
-    }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
     }
 }

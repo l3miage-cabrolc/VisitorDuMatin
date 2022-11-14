@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
-import edu.uga.miage.m1.polygons.gui.shapes.Square;
-import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
@@ -54,34 +52,16 @@ public class JSonVisitor implements Visitor, Serializable {
         this.listOfShapes = new ArrayList<>();
 
     }
-
-    @Override
-    public void visit(Circle circle) {
-        listOfShapes.add(new Shape("circle", circle.getX(), circle.getX()));
+    
+    public void visit(SimpleShape simpleShape) {
+        listOfShapes.add(new Shape(simpleShape.getClassName(), simpleShape.getX(), simpleShape.getX()));
     }
-
-    @Override
-    public void visit(Square square) {
-        listOfShapes.add(new Shape("square", square.getX(), square.getX()));
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-
-        listOfShapes.add(new Shape("triangle", triangle.getX(), triangle.getX()));
-        
-
-    }
-
-
 
     public void save() {
-
-
-       File file = new File("description.json");
-       for(int i=0; i < listOfShapes.size()-1; i++){
+        File file = new File("description.json");
+        for(int i=0; i < listOfShapes.size()-1; i++){
            representation.append(representation + "{\n\"type\": \"" + listOfShapes.get(i).getType() + "\",\n\"x\": " + listOfShapes.get(i).getX() + ",\n\"y\": " + listOfShapes.get(i).getY() + "\n},");
-       }
+        }
 
        representation.insert(0, "{\"shapes\" : [\n" );
        representation.append("{\n\"type\": \"" + listOfShapes.get(listOfShapes.size()-1).getType() + "\",\n\"x\": " + listOfShapes.get(listOfShapes.size()-1).getX() + ",\n\"y\": " + listOfShapes.get(listOfShapes.size()-1).getY() + "\n}" +  "] }");
@@ -112,4 +92,6 @@ public class JSonVisitor implements Visitor, Serializable {
     public String getRepresentation() {
         return representation.toString();
     }
+
+  
 }
