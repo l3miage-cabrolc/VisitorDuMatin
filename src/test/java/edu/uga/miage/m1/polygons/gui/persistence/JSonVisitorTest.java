@@ -3,12 +3,6 @@ package edu.uga.miage.m1.polygons.gui.persistence;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.StringReader;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
 import org.junit.jupiter.api.Test;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
@@ -20,7 +14,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  *
  */
 class JSonVisitorTest {
-/*
+
 	@Test
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
@@ -73,12 +67,4 @@ class JSonVisitorTest {
 		assertEquals(expectedRepresentation, representation);
 	}
 
-	private static JsonObject jsonFromString(String jsonObjectStr) {
-
-	    JsonReader jsonReader = Json.createReader(new StringReader(jsonObjectStr));
-	    JsonObject object = jsonReader.readObject();
-	    jsonReader.close();
-
-	    return object;
-	}*/
 }

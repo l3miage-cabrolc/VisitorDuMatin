@@ -1,10 +1,6 @@
 {"shapes" : [
 {
-<<<<<<< HEAD
 "type": "square",
-=======
-"type": "triangle",
->>>>>>> refs/remotes/origin/main
 "x": 0,
 "y": 0
 }] }

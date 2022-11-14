@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <shape>
-<type>triangle</type>
-<x>0</x>\n<y>0</y>\n</shape>\n
+<type>circle</type>
+<x>0</x>
+<y>0</y>
+</shape>

@@ -15,7 +15,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 @ExtendWith(MockitoExtension.class)
 class CircleTest {
-	/*
+	
 	private int counterVisitorCircle;
 
 
@@ -41,24 +41,10 @@ class CircleTest {
 		Visitor v = new Visitor() {
 			
 			@Override
-			public void visit(Circle circle) {
+			public void visit(SimpleShape circle) {
 				counterVisitorCircle++;			
 			}
 
-			@Override
-			public void visit(Square square) {
-				// ne rien faire
-				
-			}
-
-			@Override
-			public void visit(Triangle triangle) {
-				// ne rien faire
-				
-			}
-
-			
-			
 		};
 		
 		c.accept(v);
@@ -92,5 +78,5 @@ class CircleTest {
 
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>circle</type>\n<x>" + circle.getX() +"</x>\n<y>" + circle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
-	}*/
+	}
 }
