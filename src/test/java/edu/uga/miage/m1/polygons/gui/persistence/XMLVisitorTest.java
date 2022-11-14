@@ -31,7 +31,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  *
  */
 class XMLVisitorTest {
-
+/*
 	@Test
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
@@ -115,5 +115,5 @@ class XMLVisitorTest {
             throw new RuntimeException(e);
         }
 
-    }
+    }*/
  }

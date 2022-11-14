@@ -24,8 +24,8 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
+
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 /**
  * This class implements the square <tt>SimpleShape</tt> extension.
@@ -33,15 +33,11 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Square implements SimpleShape, Visitable {
-
-    int x;
-
-    int y;
+public class Square extends SimpleShape implements Visitable {
 
     public Square(int x, int y) {
-        x = x - 25;
-        y = y - 25;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -49,6 +45,7 @@ public class Square implements SimpleShape, Visitable {
      * the shape.
      * @param g2 The graphics object used for painting.
      */
+    @Override
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint(x, y, Color.BLUE, (float)x + 50, y, Color.WHITE);
@@ -58,20 +55,5 @@ public class Square implements SimpleShape, Visitable {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Rectangle2D.Double(x, y, 50, 50));
-    }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
     }
 }

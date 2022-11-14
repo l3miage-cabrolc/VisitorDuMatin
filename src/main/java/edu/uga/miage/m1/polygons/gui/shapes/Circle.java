@@ -24,18 +24,14 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-public class Circle implements SimpleShape, Visitable {
-
-    int x;
-
-    int y;
+public class Circle extends SimpleShape implements Visitable {
 
     public Circle(int x, int y) {
-        this.x = x - 25;
-        this.y = y - 25;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -43,6 +39,7 @@ public class Circle implements SimpleShape, Visitable {
      * the shape.
      * @param g2 The graphics object used for painting.
      */
+    @Override
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint(this.x, this.y, Color.RED, (float)this.x + 50, this.y, Color.WHITE);
@@ -52,18 +49,5 @@ public class Circle implements SimpleShape, Visitable {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Ellipse2D.Double(this.x, this.y, 50, 50));
-    }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
     }
 }

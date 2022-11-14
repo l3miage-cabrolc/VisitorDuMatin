@@ -15,7 +15,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 @ExtendWith(MockitoExtension.class)
 class SquareTest {
-
+/*
 	private int counterVisitorSquare;
 
 	@Test
@@ -35,12 +35,12 @@ class SquareTest {
 	@Test
     void test_visit_without_mockito() {
                 
-        Circle c = new Circle(0, 0);
+        Square c = new Square(0, 0);
         
         Visitor v = new Visitor() {
             
             @Override
-            public void visit(Circle circle) {
+            public void visit(Square square) {
                 // ne rien faire       
             }
 
@@ -91,5 +91,5 @@ class SquareTest {
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>square</type>\n<x>" + square.getX() +"</x>\n<y>" + square.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
-    }
+    }*/
 }
