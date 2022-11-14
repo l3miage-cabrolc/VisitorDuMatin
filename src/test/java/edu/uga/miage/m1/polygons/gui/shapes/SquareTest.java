@@ -35,7 +35,7 @@ class SquareTest {
 	@Test
     void test_visit_without_mockito() {
                 
-        Circle c = new Circle(0, 0);
+        Square s = new Square(0, 0);
         
         Visitor v = new Visitor() {
             
@@ -60,7 +60,7 @@ class SquareTest {
             
         };
         
-        c.accept(v);
+        s.accept(v);
         assertEquals(1, counterVisitorSquare);
     }
 	

@@ -24,52 +24,53 @@ class JSonVisitorTest {
 	@Test
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
-		String representation = 
-				String.format("{\"type\": \"%s\", \"x\": %d,\"y\": %d}", "circle", c.getX(), c.getY());
-		String expectedRepresentation = jsonFromString(representation).toString();
+		String expectedRepresentation = 
+				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "circle", c.getX(), c.getY());
+	
 		
 		JSonVisitor visitor = new JSonVisitor();
 		c.accept(visitor);
-		representation = visitor.getRepresentation();
+		visitor.save();
+		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the circle");
 		}
-		JsonObject jObject = jsonFromString(representation);
-		assertEquals(expectedRepresentation, jObject.toString());
+		
+		assertEquals(expectedRepresentation, representation);
 	}
 
 	@Test
 	void test_triangle_visitor() {
 		var t = new Triangle(0, 0);
-		String representation = 
-				String.format("{\"type\": \"%s\",\"x\": %d,\"y\": %d}", "triangle", t.getX(), t.getY());
-		String expectedRepresentation = jsonFromString(representation).toString();
+		String expectedRepresentation = 
+				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "triangle", t.getX(), t.getY());
 		
 		JSonVisitor visitor = new JSonVisitor();
 		t.accept(visitor);
-		representation = visitor.getRepresentation();
+		visitor.save();
+		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the triangle");
 		}
-		JsonObject jObject = jsonFromString(representation);
-		assertEquals(expectedRepresentation, jObject.toString());
+		assertEquals(expectedRepresentation,visitor.getRepresentation());
 	}
 
 	@Test
 	void test_square_visitor() {
 		var s = new Square(0, 0);
-		String representation = 
-				String.format("{\"type\": \"%s\", \"x\": %d,\"y\": %d}", "square", s.getX(), s.getY());
-		String expectedRepresentation = jsonFromString(representation).toString();
+		String expectedRepresentation = 
+				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "square", s.getX(), s.getY());
+
 		
 		JSonVisitor visitor = new JSonVisitor();
 		s.accept(visitor);
-		representation = visitor.getRepresentation();
+		visitor.save();
+		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the square");
 		}
-		JsonObject jObject = jsonFromString(representation);
-		assertEquals(expectedRepresentation, jObject.toString());
+		
+		assertEquals(expectedRepresentation, representation);
 	}
 
 	private static JsonObject jsonFromString(String jsonObjectStr) {

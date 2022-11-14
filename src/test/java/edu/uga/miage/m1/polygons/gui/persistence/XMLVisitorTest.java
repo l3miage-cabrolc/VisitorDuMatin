@@ -36,7 +36,7 @@ class XMLVisitorTest {
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
 		String representation = 
-				String.format("<shape><type>%s</type><x>%d</x><y>%d</y></shape>", "circle", c.getX(), c.getY());
+				String.format("<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>", "circle", c.getX(), c.getY());
 		String expectedRepresentation = convertXmlToString(convertStringToXml(representation));
 		XMLVisitor visitor = new XMLVisitor();
 		c.accept(visitor);
@@ -52,7 +52,7 @@ class XMLVisitorTest {
 	void test_triangle_visitor() {
 		var t = new Triangle(0, 0);
 		String representation = 
-				String.format("<shape><type>%s</type><x>%d</x><y>%d</y></shape>", "triangle", t.getX(), t.getY());
+				String.format("<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>", "triangle", t.getX(), t.getY());
 		String expectedRepresentation = convertXmlToString(convertStringToXml(representation));
 		XMLVisitor visitor = new XMLVisitor();
 		t.accept(visitor);
@@ -68,7 +68,7 @@ class XMLVisitorTest {
 	void test_square_visitor() {
 		var s = new Square(0, 0);
 		String representation = 
-				String.format("<shape><type>%s</type><x>%d</x><y>%d</y></shape>", "square", s.getX(), s.getY());
+				String.format("<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>", "square", s.getX(), s.getY());
 		String expectedRepresentation = convertXmlToString(convertStringToXml(representation));
 		XMLVisitor visitor = new XMLVisitor();
 		s.accept(visitor);
