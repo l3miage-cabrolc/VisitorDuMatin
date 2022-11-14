@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -29,23 +30,10 @@ public class XMLVisitor implements Visitor, Serializable {
     }
 
     @Override
-    public void visit(Circle circle) {
-        representation = representation + BEGIN_REPR + circle.getClassName() + "</type>\n<x>" + circle.getX() + MIDDLE_REPR + circle.getY() + END_REPR;
-
+    public void visit(SimpleShape simpleShape) {
+        representation = representation + BEGIN_REPR + simpleShape.getClassName() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
     }
-
-    @Override
-    public void visit(Square square) {
-        representation = representation + BEGIN_REPR + square.getClassName() + "</type>\n<x>" + square.getX() + MIDDLE_REPR + square.getY() + END_REPR;
-
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        representation = representation + BEGIN_REPR + triangle.getClassName() + "</type>\n<x>" + triangle.getX() + MIDDLE_REPR + triangle.getY() + END_REPR;
-    }
-
-
+    
     public void save(){
 
         File file = new File("description.xml");
