@@ -24,7 +24,7 @@ class JSonVisitorTest {
 		
 		JSonVisitor visitor = new JSonVisitor();
 		c.accept(visitor);
-		visitor.save();
+		visitor.save("./exemple.json");
 		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the circle");
@@ -41,7 +41,7 @@ class JSonVisitorTest {
 		
 		JSonVisitor visitor = new JSonVisitor();
 		t.accept(visitor);
-		visitor.save();
+		visitor.save("./exemple.json");
 		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the triangle");
@@ -58,7 +58,7 @@ class JSonVisitorTest {
 		
 		JSonVisitor visitor = new JSonVisitor();
 		s.accept(visitor);
-		visitor.save();
+		visitor.save("./exemple.json");
 		String representation = visitor.getRepresentation();
 		if (representation == null) {
 			fail("The visitor sequence must be implemented for the square");

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <shape>
-<type>square</type>
-<x>132</x>
-<y>162</y>
-</shape>
-<shape>
 <type>circle</type>
-<x>265</x>
-<y>167</y>
+<x>177</x>
+<y>153</y>
 </shape>
 <shape>
 <type>triangle</type>
-<x>272</x>
-<y>138</y>
+<x>73</x>
+<y>28</y>
+</shape>
+<shape>
+<type>square</type>
+<x>109</x>
+<y>56</y>
 </shape>

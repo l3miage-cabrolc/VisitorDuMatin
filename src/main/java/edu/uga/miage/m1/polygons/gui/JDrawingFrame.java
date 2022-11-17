@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -17,6 +20,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,8 +59,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private ShapeActionListener mReusableActionListener = new ShapeActionListener();
 
-    private JsonSaveActionListener saveJson = new JsonSaveActionListener();
-    private XMLSaveActionListener saveXML = new XMLSaveActionListener();
+    private JsonSaveActionListener saveJson = new JsonSaveActionListener(this);
+    private XMLSaveActionListener saveXML = new XMLSaveActionListener(this);
+
+
+    private OpenFileListener openFile = new OpenFileListener(this);
 
     private static JSonVisitor jsonVisitor = new JSonVisitor();
 
@@ -90,24 +97,39 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
 
-        addSave();
+        
 
         addShape(Shapes.SQUARE, new ImageIcon(getClass().getResource("images/square.png")));
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
         setPreferredSize(new Dimension(400, 400));
+       
+
+        addOpenFile();
+
+        addSave();
     }
 
+
+    public void addOpenFile(){
+        JButton open = new JButton("Open file to import");
+        open.addActionListener(openFile);
+        mToolBar.add(open);
+
+
+    }
 
 
     private void addSave(){
         JButton b1 = new JButton("save to Json");
-        b1.addActionListener(saveJson);
-        mToolBar.add(b1);
-
         JButton b2 = new JButton("save to XML");
-        b1.addActionListener(saveXML);
+        b1.addActionListener(saveJson);
+        b2.addActionListener(saveXML);
+        mToolBar.add(b1);
         mToolBar.add(b2);
+       
+        
+       
     }
 
     /**
@@ -248,16 +270,75 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
     private class JsonSaveActionListener implements ActionListener, Serializable {
+
+        JDrawingFrame frame;
+
+        public JsonSaveActionListener(JDrawingFrame frame){
+            this.frame = frame;
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-                    jsonVisitor.save();
+            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            int option = fileChooser.showSaveDialog(frame);
+            if(option == JFileChooser.APPROVE_OPTION){
+               File file = fileChooser.getSelectedFile();
+               mLabel.setText("File Selected: " + file.getName());
+               jsonVisitor.save(file.getPath());
+            }else{
+               mLabel.setText("Open command canceled");
+            }
+
 
         }
     }
     private class XMLSaveActionListener implements ActionListener, Serializable{
+
+        JDrawingFrame frame;
+
+        public XMLSaveActionListener(JDrawingFrame frame){
+            this.frame = frame;
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-                xmlVisitor.save();
+
+
+            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            int option = fileChooser.showSaveDialog(frame);
+            if(option == JFileChooser.APPROVE_OPTION){
+               File file = fileChooser.getSelectedFile();
+               mLabel.setText("File Selected: " + file.getName());
+               xmlVisitor.save(file.getPath());
+            }else{
+               mLabel.setText("Open command canceled");
+            }
+                
+        }
+    }
+
+
+    private class OpenFileListener implements ActionListener, Serializable{
+
+        JDrawingFrame frame;
+
+        File chosenFile;
+
+        public OpenFileListener(JDrawingFrame frame){
+            this.frame = frame;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e){
+            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            int option = fileChooser.showOpenDialog(frame);
+            if(option == JFileChooser.APPROVE_OPTION){
+               File file = fileChooser.getSelectedFile();
+               chosenFile = file;
+               mLabel.setText("File Selected: " + file.getName());
+            }else{
+               mLabel.setText("Open command canceled");
+            }
         }
     }
 }

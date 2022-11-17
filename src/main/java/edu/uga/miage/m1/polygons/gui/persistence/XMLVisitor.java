@@ -34,9 +34,9 @@ public class XMLVisitor implements Visitor, Serializable {
         representation = representation + BEGIN_REPR + simpleShape.getClassName() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
     }
     
-    public void save(){
+    public void save(String fileName){
 
-        File file = new File("description.xml");
+        File file = new File(fileName);
 
         try( FileWriter fileWriter =  new FileWriter(file)) {
             fileWriter.write(representation);

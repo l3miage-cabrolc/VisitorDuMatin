@@ -16,7 +16,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 
 class TriangleTest {
 
-/*
+
 	private int counterVisitorTriangle;
 
 
@@ -26,13 +26,6 @@ class TriangleTest {
 		assertEquals(0, t.getX());
 		assertEquals(0, t.getY());
 	}
-	
-	@Test
-	void test_visit_with_mock(@Mock Visitor v) {
-		Triangle t = new Triangle(0, 0);		
-		t.accept(v);
-		verify(v, times(1)).visit(t);
-	}
 
 	@Test
 	void test_visit_without_mockito() {
@@ -40,20 +33,9 @@ class TriangleTest {
 		Triangle t = new Triangle(0, 0);
 		
 		Visitor v = new Visitor() {
-			
-			@Override
-			public void visit(Circle circle) {
-				// ne rien faire 		
-			}
 
 			@Override
-			public void visit(Square square) {
-				// ne rien faire
-				
-			}
-
-			@Override
-			public void visit(Triangle triangle) {
+			public void visit(SimpleShape triangle) {
 				counterVisitorTriangle++;
 				
 			}
@@ -74,7 +56,7 @@ class TriangleTest {
 
         visitor.visit(t);
 
-        visitor.save();
+        visitor.save("/exemple.json");
 
         assertEquals("{\"shapes\" : [\n{\n\"type\": \"triangle\",\n\"x\": " + t.getX() + ",\n\"y\": " + t.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
     }
@@ -89,9 +71,9 @@ class TriangleTest {
 
         visitor.visit(triangle);
 
-        visitor.save();
+        visitor.save("/exemple.xml");
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>triangle</type>\n<x>" + triangle.getX() +"</x>\n<y>" + triangle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
-    }*/
+    }
 }

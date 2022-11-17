@@ -59,7 +59,7 @@ class SquareTest {
 
         visitor.visit(s);
 
-        visitor.save();
+        visitor.save("/exemple.json");
 
         assertEquals("{\"shapes\" : [\n{\n\"type\": \"square\",\n\"x\": " + s.getX() + ",\n\"y\": " + s.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
     }
@@ -74,7 +74,7 @@ class SquareTest {
 
         visitor.visit(square);
 
-        visitor.save();
+        visitor.save("/exemple.xml");
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>square</type>\n<x>" + square.getX() +"</x>\n<y>" + square.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 

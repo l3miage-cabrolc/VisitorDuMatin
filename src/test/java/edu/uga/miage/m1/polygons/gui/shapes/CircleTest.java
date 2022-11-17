@@ -59,7 +59,7 @@ class CircleTest {
 
 		visitor.visit(c);
 
-		visitor.save();
+		visitor.save("/exemple.json");
 
 		assertEquals("{\"shapes\" : [\n{\n\"type\": \"circle\",\n\"x\": " + c.getX() + ",\n\"y\": " + c.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
 	}
@@ -74,7 +74,7 @@ class CircleTest {
 
 		visitor.visit(circle);
 
-		visitor.save();
+		visitor.save("/exemple.xml");
 
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>circle</type>\n<x>" + circle.getX() +"</x>\n<y>" + circle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
