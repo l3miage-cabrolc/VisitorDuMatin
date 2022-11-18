@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
-import java.util.logging.Logger;
 import javax.swing.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
@@ -153,6 +152,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         repaint();
     }
 
+
+
     /**
      * 
      *      * Implements method for the <tt>MouseListener</tt> interface to
@@ -188,7 +189,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mLabel.setText(" ");
         mLabel.repaint();
     }
-
     /**
      * Implements method for the <tt>MouseListener</tt> interface to initiate
      * shape dragging.

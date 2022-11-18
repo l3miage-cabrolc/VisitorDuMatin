@@ -34,7 +34,7 @@ public class XMLVisitor implements Visitor, Serializable {
     
     public void save(String fileName){
 
-        File file = new File(fileName);
+        File file = new File(fileName + ".xml");
 
         try( FileWriter fileWriter =  new FileWriter(file)) {
             fileWriter.write(representation);

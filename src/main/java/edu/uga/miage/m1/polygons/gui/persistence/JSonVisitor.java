@@ -58,7 +58,7 @@ public class JSonVisitor implements Visitor, Serializable {
     }
 
     public void save(String fileName) {
-        File file = new File(fileName);
+        File file = new File(fileName + ".json");
         for(int i=0; i < listOfShapes.size()-1; i++){
            representation.append(representation + "{\n\"type\": \"" + listOfShapes.get(i).getType() + "\",\n\"x\": " + listOfShapes.get(i).getX() + ",\n\"y\": " + listOfShapes.get(i).getY() + "\n},");
         }
