@@ -35,9 +35,15 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
  */
 public class Square extends SimpleShape implements Visitable {
 
+    private static final String TYPE = "square";
+
     public Square(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     /**

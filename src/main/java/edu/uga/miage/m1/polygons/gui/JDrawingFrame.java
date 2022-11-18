@@ -10,28 +10,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
-
+import javax.swing.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
-import edu.uga.miage.m1.polygons.gui.shapes.Square;
-import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -44,8 +34,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private enum Shapes {
         SQUARE, TRIANGLE, CIRCLE
     }
+
+
+    private ArrayList<SimpleShape> myShapes;
     
-    private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
+    private SimpleShape selectedShape;
+
+    private ShapeFactory shapeFactory;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -69,6 +65,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private static XMLVisitor xmlVisitor = new XMLVisitor();
 
+
     /**
      * Tracks buttons to manage the background.
      */
@@ -80,6 +77,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     public JDrawingFrame(String frameName) {
         super(frameName);
+
+        //initiate the list of shapes 
+
+        myShapes = new ArrayList<>();
+
+        //Initiate a shape factory
+
+        shapeFactory = new ShapeFactory();
     
         // Instantiates components
         mToolBar = new JToolBar("Toolbar");
@@ -98,7 +103,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         // Add shapes in the menu
 
         
-
         addShape(Shapes.SQUARE, new ImageIcon(getClass().getResource("images/square.png")));
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
@@ -127,8 +131,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         b2.addActionListener(saveXML);
         mToolBar.add(b1);
         mToolBar.add(b2);
-       
-        
        
     }
 
@@ -161,28 +163,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         if (mPanel.contains(evt.getX(), evt.getY())) {
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
 
-            switch(mSelected) {
-                case CIRCLE:
-                    Circle circle = new Circle(evt.getX(), evt.getY());
-                    circle.draw(g2);
-                    jsonVisitor.visit(circle);
-                    xmlVisitor.visit(circle);
-                    break;
-                case TRIANGLE:
-                    Triangle triangle = new Triangle(evt.getX(), evt.getY());
-                    triangle.draw(g2);
-                    jsonVisitor.visit(triangle);
-                    xmlVisitor.visit(triangle);
-                    break;
-                case SQUARE:
-                    Square square = new Square(evt.getX(), evt.getY());
-                    square.draw(g2);
-                    jsonVisitor.visit(square);
-                    xmlVisitor.visit(square);
-                    break;
-                default:
-                    LOGGER.log(Level.SEVERE, "No shape named {0} ", mSelected);
-            }
+            SimpleShape shape = shapeFactory.getShape(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
+            shape.draw(g2);
+            myShapes.add(shape);
+            shape.accept(jsonVisitor);
+            shape.accept(xmlVisitor);
+
         }
     }
 
@@ -211,6 +197,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mousePressed(MouseEvent evt) {
         //Implements method for the <tt>MouseListener</tt> interface to initiate
         //shape dragging.
+        for(SimpleShape s : myShapes){
+            if(((evt.getX()-25> s.getX() && evt.getX()-25 < s.getX() + 50)||(evt.getX()-25 > s.getX()- 50 && evt.getX()-25 <  s.getX())) && ((evt.getY()-25> s.getY() && evt.getY()-25 < s.getY() + 50)||(evt.getY()-25 > s.getY()- 50 && evt.getY()-25 <  s.getY()))){
+                s.setSelected(true);
+                this.selectedShape = s;
+            }
+        }
+
     }
 
     /**
@@ -221,6 +214,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mouseReleased(MouseEvent evt) {
         //Implements method for the <tt>MouseListener</tt> interface to complete
         //shape dragging.
+       
     }
 
     /**
@@ -231,6 +225,23 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mouseDragged(MouseEvent evt) {
         //Implements method for the <tt>MouseMotionListener</tt> interface to
         //move a dragged shape.
+        if(selectedShape!= null){
+            selectedShape.move(evt.getX(), evt.getY());
+            redrawMyShapes();
+        }
+       
+    }
+
+    private void redrawMyShapes(){
+        repaint();
+        Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+       
+        SwingUtilities.invokeLater(() -> {
+            for(SimpleShape s : myShapes){
+                s.draw(g2);   
+            }
+        });
+        
     }
 
     /**
@@ -279,17 +290,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
-            int option = fileChooser.showSaveDialog(frame);
-            if(option == JFileChooser.APPROVE_OPTION){
-               File file = fileChooser.getSelectedFile();
-               mLabel.setText("File Selected: " + file.getName());
-               jsonVisitor.save(file.getPath());
-            }else{
-               mLabel.setText("Open command canceled");
-            }
-
-
+            saveFile(frame, jsonVisitor);
         }
     }
     private class XMLSaveActionListener implements ActionListener, Serializable{
@@ -302,18 +303,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-
-            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
-            int option = fileChooser.showSaveDialog(frame);
-            if(option == JFileChooser.APPROVE_OPTION){
-               File file = fileChooser.getSelectedFile();
-               mLabel.setText("File Selected: " + file.getName());
-               xmlVisitor.save(file.getPath());
-            }else{
-               mLabel.setText("Open command canceled");
-            }
-                
+            saveFile(frame, xmlVisitor);
         }
     }
 
@@ -321,8 +311,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private class OpenFileListener implements ActionListener, Serializable{
 
         JDrawingFrame frame;
-
-        File chosenFile;
 
         public OpenFileListener(JDrawingFrame frame){
             this.frame = frame;
@@ -334,11 +322,23 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             int option = fileChooser.showOpenDialog(frame);
             if(option == JFileChooser.APPROVE_OPTION){
                File file = fileChooser.getSelectedFile();
-               chosenFile = file;
                mLabel.setText("File Selected: " + file.getName());
             }else{
                mLabel.setText("Open command canceled");
             }
         }
+    }
+
+
+    private void saveFile(JDrawingFrame frame, Visitor visitor){
+        JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            int option = fileChooser.showSaveDialog(frame);
+            if(option == JFileChooser.APPROVE_OPTION){
+               File file = fileChooser.getSelectedFile();
+               mLabel.setText("File Selected: " + file.getName());
+               visitor.save(file.getPath());
+            }else{
+               mLabel.setText("Open command canceled");
+            }
     }
 }

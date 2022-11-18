@@ -29,9 +29,16 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 
 public class Circle extends SimpleShape implements Visitable {
 
+    private static final String TYPE = "circle";
+
     public Circle(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
+       
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     /**
@@ -50,4 +57,6 @@ public class Circle extends SimpleShape implements Visitable {
         g2.setStroke(wideStroke);
         g2.draw(new Ellipse2D.Double(this.x, this.y, 50, 50));
     }
+
+
 }

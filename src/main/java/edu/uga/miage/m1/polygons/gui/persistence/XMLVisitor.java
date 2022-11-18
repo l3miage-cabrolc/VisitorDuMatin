@@ -7,10 +7,8 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
-import edu.uga.miage.m1.polygons.gui.shapes.Square;
-import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+
 
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
@@ -31,7 +29,7 @@ public class XMLVisitor implements Visitor, Serializable {
 
     @Override
     public void visit(SimpleShape simpleShape) {
-        representation = representation + BEGIN_REPR + simpleShape.getClassName() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
+        representation = representation + BEGIN_REPR + simpleShape.getType() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
     }
     
     public void save(String fileName){

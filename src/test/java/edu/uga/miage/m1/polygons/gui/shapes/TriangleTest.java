@@ -1,14 +1,6 @@
 package edu.uga.miage.m1.polygons.gui.shapes;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
@@ -23,8 +15,8 @@ class TriangleTest {
 	@Test
 	void test_getters() {
 		Triangle t = new Triangle(0, 0);
-		assertEquals(0, t.getX());
-		assertEquals(0, t.getY());
+		assertEquals(-25, t.getX());
+		assertEquals(-25, t.getY());
 	}
 
 	@Test
@@ -40,6 +32,7 @@ class TriangleTest {
 				
 			}
 
+			public void save(String fileName){}
 			
 			
 		};

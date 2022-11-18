@@ -36,11 +36,17 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
  */
 public class Triangle extends SimpleShape implements Visitable {
 
+    private static final String TYPE = "triangle";
+
+
     public Triangle(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
     }
 
+    @Override
+    public String getType() {
+        return TYPE;
+    }
     /**
      * Implements the <tt>SimpleShape.draw()</tt> method for painting
      * the shape.

@@ -54,7 +54,7 @@ public class JSonVisitor implements Visitor, Serializable {
     }
     
     public void visit(SimpleShape simpleShape) {
-        listOfShapes.add(new Shape(simpleShape.getClassName(), simpleShape.getX(), simpleShape.getX()));
+        listOfShapes.add(new Shape(simpleShape.getType(), simpleShape.getX(), simpleShape.getX()));
     }
 
     public void save(String fileName) {

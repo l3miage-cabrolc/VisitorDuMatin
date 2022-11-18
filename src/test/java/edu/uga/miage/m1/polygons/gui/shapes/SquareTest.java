@@ -21,8 +21,8 @@ class SquareTest {
 	@Test
 	void test_getters() {
 		Square s = new Square(0, 0);
-		assertEquals(0, s.getX());
-		assertEquals(0, s.getY());
+		assertEquals(-25, s.getX());
+		assertEquals(-25, s.getY());
 	}
 
 	@Test
@@ -38,12 +38,13 @@ class SquareTest {
         Square s = new Square(0, 0);
         
         Visitor v = new Visitor() {
-            
             @Override
             public void visit(SimpleShape triangle) {
                 counterVisitorSquare ++;
                 
             }
+            @Override
+            public void save(String fileame){}
             
         };
         
