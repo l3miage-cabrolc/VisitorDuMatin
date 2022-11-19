@@ -15,7 +15,8 @@ public class EraseShape implements Command{
 
     @Override
     public Command execute(SimpleShape shape, List<SimpleShape> shapes) {
-        // TODO Auto-generated method stub
-        return null;
+        shapes.remove(shape);
+        shape.draw(this.g2);
+        return this;
     }
 }

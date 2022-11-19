@@ -60,7 +60,25 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private JLabel mLabel;
 
     //commands 
-    List<Command> commands;
+    protected List<Command> commands;
+
+    public void RemoteControl() {
+        commands = new ArrayList<>();
+    }
+
+    public boolean addCommand(Command command) {
+        return commands.add(command);
+    }
+
+    public void play() {
+        for (Command command : commands) {
+            command.execute(selectedShape, myShapes);
+        }
+    }
+
+    public void reset() {
+        commands.clear();
+    }
 
 
     //AvtionListeners 
