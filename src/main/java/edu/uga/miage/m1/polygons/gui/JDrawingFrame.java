@@ -6,15 +6,22 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.swing.*;
+
+import edu.uga.miage.m1.polygons.gui.command.Command;
+import edu.uga.miage.m1.polygons.gui.command.DrawShape;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
@@ -28,7 +35,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
+public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener, KeyListener {
 
     private enum Shapes {
         SQUARE, TRIANGLE, CIRCLE
@@ -52,16 +59,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private JLabel mLabel;
 
-    private ShapeActionListener mReusableActionListener = new ShapeActionListener();
+    //commands 
+    List<Command> commands;
 
+
+    //AvtionListeners 
+
+    private ShapeActionListener mReusableActionListener = new ShapeActionListener();
     private JsonSaveActionListener saveJson = new JsonSaveActionListener(this);
     private XMLSaveActionListener saveXML = new XMLSaveActionListener(this);
-
-
     private OpenFileListener openFile = new OpenFileListener(this);
-
     private static JSonVisitor jsonVisitor = new JSonVisitor();
-
     private static XMLVisitor xmlVisitor = new XMLVisitor();
 
 
@@ -93,24 +101,38 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.setMinimumSize(new Dimension(400, 400));
         mPanel.addMouseListener(this);
         mPanel.addMouseMotionListener(this);
+
+        mPanel.addKeyListener(this);
+        addKeyListener(null);
+        mPanel.setFocusable(true);
+        
+        mPanel.setVisible(true);
+
         mLabel = new JLabel(" ", SwingConstants.LEFT);
         // Fills the panel
         setLayout(new BorderLayout());
         add(mToolBar, BorderLayout.NORTH);
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
-        // Add shapes in the menu
-
         
+        
+        
+        
+        // Add shapes in the menu
         addShape(Shapes.SQUARE, new ImageIcon(getClass().getResource("images/square.png")));
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
         setPreferredSize(new Dimension(400, 400));
        
-
+        //add persistence buttons 
         addOpenFile();
-
         addSave();
+
+
+        //commands 
+        commands = new ArrayList<>();
+
+    
     }
 
 
@@ -153,7 +175,21 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
 
+    public void keyPressed(KeyEvent e) {
+        if ((e.getKeyCode() == KeyEvent.VK_Z)) {
+            System.out.println("woot!");
+        }
 
+        System.out.println("key pressed");
+    }
+
+    public void keyReleased(KeyEvent e) {
+        System.out.println("woot!");
+    }
+
+    public void keyTyped(KeyEvent e) {
+        
+    }
     /**
      * 
      *      * Implements method for the <tt>MouseListener</tt> interface to
@@ -165,8 +201,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
 
             SimpleShape shape = shapeFactory.getShape(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
-            shape.draw(g2);
-            myShapes.add(shape);
+            //add to commands 
+            commands.add(new DrawShape(g2).execute(shape, myShapes));
+
             shape.accept(jsonVisitor);
             shape.accept(xmlVisitor);
 
@@ -233,6 +270,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     private void redrawMyShapes(){
+
         repaint();
         Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
        
@@ -257,6 +295,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mLabel.setText("(" + evt.getX() + "," + evt.getY() + ")");
     }
 
+    
     /**
      * Simple action listener for shape tool bar buttons that sets
      * the drawing frame's currently selected shape when receiving
