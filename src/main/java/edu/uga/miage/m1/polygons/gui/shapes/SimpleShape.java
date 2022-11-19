@@ -3,8 +3,8 @@ package edu.uga.miage.m1.polygons.gui.shapes;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-import edu.uga.miage.m1.polygons.gui.api.Movable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
+import edu.uga.miage.m1.polygons.gui.shapes.api.Movable;
 
 
 /**

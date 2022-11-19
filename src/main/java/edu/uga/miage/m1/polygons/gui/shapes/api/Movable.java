@@ -1,4 +1,4 @@
-package edu.uga.miage.m1.polygons.gui.api;
+package edu.uga.miage.m1.polygons.gui.shapes.api;
 
 public interface Movable {
     
