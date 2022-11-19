@@ -80,4 +80,15 @@ class SquareTest {
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>square</type>\n<x>" + square.getX() +"</x>\n<y>" + square.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
     }
+
+
+    @Test
+	void shouldMoveSquare(){
+		Square s= new Square(0, 0);
+		s.move(50, 50);
+
+		assertEquals(25, s.getX());
+		assertEquals(25, s.getY());
+	}
+
 }

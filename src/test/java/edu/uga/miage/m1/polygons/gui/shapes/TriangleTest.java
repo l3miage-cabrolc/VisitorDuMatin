@@ -69,4 +69,13 @@ class TriangleTest {
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>triangle</type>\n<x>" + triangle.getX() +"</x>\n<y>" + triangle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
 
     }
+
+	@Test
+	void shouldMoveTriangle(){
+		Triangle triangle = new Triangle(0, 0);
+		triangle.move(50, 50);
+
+		assertEquals(25, triangle.getX());
+		assertEquals(25, triangle.getY());
+	}
 }
