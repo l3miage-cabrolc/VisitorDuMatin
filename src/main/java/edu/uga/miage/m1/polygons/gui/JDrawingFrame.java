@@ -22,6 +22,7 @@ import javax.swing.*;
 
 import edu.uga.miage.m1.polygons.gui.command.Command;
 import edu.uga.miage.m1.polygons.gui.command.DrawShape;
+import edu.uga.miage.m1.polygons.gui.command.EraseShape;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Parser;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
@@ -62,20 +63,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     //commands 
     protected List<Command> commands = new ArrayList<>();
-
-    public boolean addCommand(Command command) {
-        return commands.add(command);
-    }
-
-    public void play() {
-        for (Command command : commands) {
-            command.execute(selectedShape, myShapes);
-        }
-    }
-
-    public void reset() {
-        commands.clear();
-    }
 
 
     //AvtionListeners 
@@ -118,9 +105,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.addMouseMotionListener(this);
 
         mPanel.addKeyListener(this);
-        addKeyListener(null);
+        addKeyListener(this);
         mPanel.setFocusable(true);
-        
+        setFocusable(true);
         mPanel.setVisible(true);
 
         mLabel = new JLabel(" ", SwingConstants.LEFT);
@@ -192,18 +179,24 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     public void keyPressed(KeyEvent e) {
         if ((e.getKeyCode() == KeyEvent.VK_Z)) {
-            
+            mLabel.setText("Erase " + myShapes.get(myShapes.size()-1).getType());
+            EraseShape eraseShape = new EraseShape();
+            commands.add(eraseShape.execute(myShapes.get(myShapes.size()-1), myShapes));
+            redrawMyShapes();
         }
-
+        if(myShapes.isEmpty()){
+            mLabel.setText("There are no shapes to remove");
+        }
+        
        
     }
 
     public void keyReleased(KeyEvent e) {
-       
+        // implements key releaysed method
     }
 
     public void keyTyped(KeyEvent e) {
-        
+        // implements key typed method
     }
     /**
      * 
@@ -213,16 +206,19 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     public void mouseClicked(MouseEvent evt) {
         if (mPanel.contains(evt.getX(), evt.getY())) {
-            Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
 
             SimpleShape shape = shapeFactory.getShape(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
             //add to commands 
-            commands.add(new DrawShape(g2).execute(shape, myShapes));
+            commands.add(new DrawShape().execute(shape, myShapes));
 
             shape.accept(jsonVisitor);
             shape.accept(xmlVisitor);
 
+            redrawMyShapes();
+
+            mLabel.setText("New " + shape.getType());
         }
+       
     }
 
     /**
@@ -266,6 +262,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mouseReleased(MouseEvent evt) {
         //Implements method for the <tt>MouseListener</tt> interface to complete
         //shape dragging.
+
+        requestFocus();
        
     }
 
@@ -278,6 +276,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         //Implements method for the <tt>MouseMotionListener</tt> interface to
         //move a dragged shape.
         if(selectedShape!= null){
+            mLabel.setText("Moving " + selectedShape.getType() + " to (" + evt.getX() + "," + evt.getY() + ")");
             selectedShape.move(evt.getX(), evt.getY());
             redrawMyShapes();
         }
