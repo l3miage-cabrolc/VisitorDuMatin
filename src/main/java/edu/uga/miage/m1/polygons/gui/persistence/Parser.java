@@ -1,11 +1,9 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -45,9 +43,9 @@ public class Parser {
 
         JSONParser jsonParser = new JSONParser();
          
-        try (FileReader reader = new FileReader(filename))
-        {
-            //Read JSON file
+        FileReader reader;
+        try {
+            reader = new FileReader(filename);
             Object obj = jsonParser.parse(reader);
 
             JSONObject jsonObject = (JSONObject) obj;
@@ -59,26 +57,30 @@ public class Parser {
             for(Object shapeObject : jsonArray){
                 result.add(parseShape(shapeObject, shapeFactory));
             }
- 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+        
+            //Read JSON file
+       
+ 
+    
+    
 
         return result;
-    }
-
-    public static void main(String[] args){
-        Parser p = new Parser();
-        System.out.println(p.parseJsonFile(""));
     }
 
     private static SimpleShape parseShape(Object shapeObject, ShapeFactory shapeFactory){
         JSONObject jsonShape = (JSONObject) shapeObject;
         return shapeFactory.getShape((String)jsonShape.get("type"), Integer.parseInt(jsonShape.get("x").toString()), Integer.parseInt(jsonShape.get("y").toString()));
+    }
+
+
+    public  static List<SimpleShape> importFrom(String filename){
+        if( getFileType(filename).equals(JSON)){
+            return parseJsonFile(filename);
+        }
+        return new ArrayList<>();
     }
 
 

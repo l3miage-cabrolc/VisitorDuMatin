@@ -377,10 +377,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             if(option == JFileChooser.APPROVE_OPTION){
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
-               
-
-               
-               myShapes.addAll(Parser.parseJsonFile(file.getName()));
+               myShapes.addAll(Parser.importFrom(file.getName()));
                redrawMyShapes();
                 
             }else{
