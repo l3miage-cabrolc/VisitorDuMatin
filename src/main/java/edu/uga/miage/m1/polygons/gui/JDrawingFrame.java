@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
+import edu.uga.miage.m1.polygons.gui.command.Compose;
 import edu.uga.miage.m1.polygons.gui.command.DrawShape;
 import edu.uga.miage.m1.polygons.gui.command.EraseShape;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
@@ -43,7 +44,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
 
     private ArrayList<SimpleShape> myShapes;
-    //private ArrayList<CompositeShape> myCompositeShapes;
     
     private SimpleShape selectedShape;
 
@@ -80,6 +80,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * Tracks buttons to manage the background.
      */
     private EnumMap<Shapes, JButton> mButtons = new EnumMap<>(Shapes.class);
+
+    private CompositeShape currentCompositeShape;
 
     /**
      * Default constructor that populates the main window.
@@ -203,8 +205,26 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseClicked(MouseEvent evt) {
+        
         if(isSelectingShape(evt.getX(), evt.getY(), false)){
             mLabel.setText("Shape selected");
+        }
+
+        if(isSelectingShape(evt.getX(), evt.getY(), false) && isComposing){
+            
+            if(currentCompositeShape == null){
+                currentCompositeShape = shapeFactory.getCompositeShape();
+                mLabel.setText("Simple shape added to a new composite shape");
+                
+            }else{
+                currentCompositeShape.compose(selectedShape);
+                mLabel.setText("Simple shape added to existing composite shape");
+            }
+
+            Compose compose = new Compose(currentCompositeShape, myShapes);
+            compose.setSimpleShape(selectedShape);
+            compose.execute();
+            new EraseShape(selectedShape, myShapes).execute();
         }
         
         if (mPanel.contains(evt.getX(), evt.getY()) && !isSelectingShape(evt.getX(), evt.getY(), false)) {
@@ -226,14 +246,26 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private boolean isSelectingShape(int x, int y, boolean toMove){
         boolean res = false;
         for(SimpleShape s : myShapes){
-            if(((x-25> s.getX() && x-25 < s.getX() + 50)||(x-25 > s.getX()- 50 && x-25 <  s.getX())) && ((y-25> s.getY() && y-25 < s.getY() + 50)||(y-25 > s.getY()- 50 && y-25 <  s.getY()))){
+            if(s.isSelected(x, y)){
                 res = true;
                 if(toMove){
-                    this.selectedShape = s;
+                    selectedShape = s;
                 }
-                
             }
         }
+        // if(!res){
+        //     for(CompositeShape cs : myCompositeShapes){
+        //         for(SimpleShape s :cs.getShapes()){
+        //             if(((x-25> s.getX() && x-25 < s.getX() + 50)||(x-25 > s.getX()- 50 && x-25 <  s.getX())) && ((y-25> s.getY() && y-25 < s.getY() + 50)||(y-25 > s.getY()- 50 && y-25 <  s.getY()))){
+        //                 res = true;
+        //                 if(toMove){
+        //                     this.selectedShape = cs;
+        //                 }
+                        
+        //             }
+        //         }
+        //     }
+        // }
 
         return res;
     }
@@ -288,7 +320,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mouseDragged(MouseEvent evt) {
         //Implements method for the <tt>MouseMotionListener</tt> interface to
         //move a dragged shape.
-        if(selectedShape!= null){
+        if(selectedShape != null){
             mLabel.setText("Moving " + selectedShape.getType() + " to (" + evt.getX() + "," + evt.getY() + ")");
             selectedShape.move(evt.getX(), evt.getY());
             redrawMyShapes();
@@ -414,7 +446,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             if(!isComposing){
                 isComposing = true;
                 mLabel.setText("Composition on");
-                mSelected = Shapes.COMPOSITE;
+                //mSelected = Shapes.COMPOSITE;
             }else{
                 isComposing = false;
                 mLabel.setText("Composition off");
