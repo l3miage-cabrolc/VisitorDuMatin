@@ -19,7 +19,7 @@ public class Parser {
     private static final String XML = "xml";
     private static final String JSON = "json";
     
-    private static String getFileType(String file){
+    public static String getFileType(String file){
         int index = file.lastIndexOf('.');
         if(index > 0) {
             return file.substring(index + 1);
@@ -60,13 +60,7 @@ public class Parser {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        
-            //Read JSON file
-       
- 
     
-    
-
         return result;
     }
 

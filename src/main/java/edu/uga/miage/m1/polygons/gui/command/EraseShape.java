@@ -7,11 +7,16 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
 public class EraseShape implements Command{
     
-
+    SimpleShape shape;
+    List<SimpleShape> shapes;
+    
+    public EraseShape(SimpleShape shape, List<SimpleShape> shapes){
+        this.shape = shape;
+        this.shapes = shapes;
+    }
 
     @Override
-    public Command execute(SimpleShape shape, List<SimpleShape> shapes) {
+    public void execute() {
         shapes.remove(shape);
-        return this;
     }
 }

@@ -42,7 +42,7 @@ public abstract class SimpleShape implements Movable, Serializable{
         return y;
     }
     
-    public abstract String getType();
+    public abstract  String getType();
     
     public void accept(Visitor visitor) {
         visitor.visit(this);
@@ -54,9 +54,6 @@ public abstract class SimpleShape implements Movable, Serializable{
         this.y = y-25;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
     public abstract void draw(Graphics2D g2);
 
