@@ -148,7 +148,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     public void addImport(){
-        JButton open = new JButton("Open file to import");
+        JButton open = new JButton("Import");
         open.addActionListener(openFile);
         mToolBar.add(open);
     }
