@@ -41,6 +41,12 @@ public abstract class SimpleShape implements Movable, Serializable{
     public int getY() {
         return y;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
     
     public abstract  String getType();
     
@@ -56,5 +62,9 @@ public abstract class SimpleShape implements Movable, Serializable{
 
 
     public abstract void draw(Graphics2D g2);
+
+    public boolean isSelected(int x, int y){
+        return ((x-25 > getX()-50) && (x-25<getX()+50)) && ((y-25 > getY()-50) && (y-25<getY()+50));
+    }
 
 }

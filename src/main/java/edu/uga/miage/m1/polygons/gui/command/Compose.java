@@ -10,23 +10,27 @@ public class Compose implements Command{
 
     private CompositeShape compositeShape;
 
-    private List<CompositeShape> compositeShapes;
+    private List<SimpleShape> simpleShapes;
 
 
     private SimpleShape simpleShape;
 
 
-    public Compose(CompositeShape compositeShape, List<CompositeShape> compositeShapes){
+    public Compose(CompositeShape compositeShape, List<SimpleShape> simpleShapes){
         this.compositeShape = compositeShape;
-        this.compositeShapes = compositeShapes;
+        this.simpleShapes = simpleShapes;
         
     }
 
     @Override
     public void execute() {
-        this.compositeShape.addSimpleShape(simpleShape);
-        this.compositeShapes.add(compositeShape);
+        this.compositeShape.compose(simpleShape);
+        this.simpleShapes.add(compositeShape);
 
+    }
+
+    public void setSimpleShape(SimpleShape simpleShape) {
+        this.simpleShape = simpleShape;
     }
 
 }

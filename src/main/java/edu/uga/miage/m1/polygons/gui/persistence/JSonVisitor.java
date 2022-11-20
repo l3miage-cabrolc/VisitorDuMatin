@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
 /**
@@ -18,31 +19,8 @@ public class JSonVisitor implements Visitor, Serializable {
 
     private static  final Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
-    private class Shape implements Serializable{
-        private String type;
-        int x;
-        int y;
 
-        public Shape(String type, int x, int y){
-            this.type = type;
-            this.x = x;
-            this.y = y;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
-
-    ArrayList<Shape> listOfShapes;
+    ArrayList<SimpleShape> listOfShapes;
 
     private StringBuilder representation = null;
 
@@ -54,7 +32,11 @@ public class JSonVisitor implements Visitor, Serializable {
     }
     
     public void visit(SimpleShape simpleShape) {
-        listOfShapes.add(new Shape(simpleShape.getType(), simpleShape.getX(), simpleShape.getX()));
+        listOfShapes.add(simpleShape);
+    }
+
+    public void visit(CompositeShape compositeShape){
+        // redefine 
     }
 
     public void save(String fileName) {

@@ -8,6 +8,8 @@ public class CompositeShape extends SimpleShape{
 
     public static final String TYPE = "composite";
 
+
+    private SimpleShape simpleShapeSelected;
     
     private ArrayList<SimpleShape> shapes;
 
@@ -16,7 +18,7 @@ public class CompositeShape extends SimpleShape{
         this.shapes = new ArrayList<>();
     }
 
-    public void addSimpleShape(SimpleShape shape){
+    public void compose(SimpleShape shape){
         this.shapes.add(shape);
     }
 
@@ -26,7 +28,9 @@ public class CompositeShape extends SimpleShape{
 
     @Override
     public void draw(Graphics2D g2) {
-        //implements drawing a composite shape
+        for(SimpleShape s : shapes){
+            s.draw(g2);
+        }
     }
 
     @Override
@@ -36,8 +40,14 @@ public class CompositeShape extends SimpleShape{
 
     @Override
     public void move(int x, int y) {
+  
+        int xtemp = x - 25 - simpleShapeSelected.getX();
+        int ytemp = y - 25 - simpleShapeSelected.getY();
+        
+        simpleShapeSelected.move(x,y);
         for(SimpleShape simpleShape : shapes){
-            simpleShape.move(x, y);
+            simpleShape.setX(simpleShape.getX() + xtemp);
+            simpleShape.setY(simpleShape.getY() + ytemp);
         }
     }
 
@@ -46,4 +56,14 @@ public class CompositeShape extends SimpleShape{
     }
 
  
+    @Override
+    public boolean isSelected(int x, int y) {
+        for(SimpleShape s : shapes){
+            if(s.isSelected(x, y)){
+                simpleShapeSelected = s;
+                return true;
+            }
+        }
+        return false;
+    }
 }
