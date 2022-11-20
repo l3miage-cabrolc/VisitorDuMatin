@@ -79,7 +79,7 @@ class CircleTest {
 
 		visitor.save("/exemple.xml");
 
-		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<shape>\n<type>circle</type>\n<x>" + circle.getX() +"</x>\n<y>" + circle.getY() + "</y>\n</shape>\n", visitor.getRepresentation());
+		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>circle</type>\n<x>" + circle.getX() +"</x>\n<y>" + circle.getY() + "</y>\n</shape>\n</root>", visitor.getRepresentation());
 
 	}
 

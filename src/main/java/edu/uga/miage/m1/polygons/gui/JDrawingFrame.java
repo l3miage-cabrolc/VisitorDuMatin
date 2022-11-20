@@ -22,6 +22,7 @@ import javax.swing.*;
 import edu.uga.miage.m1.polygons.gui.command.Compose;
 import edu.uga.miage.m1.polygons.gui.command.DrawShape;
 import edu.uga.miage.m1.polygons.gui.command.EraseShape;
+import edu.uga.miage.m1.polygons.gui.command.Move;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Parser;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
@@ -217,7 +218,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 mLabel.setText("Simple shape added to a new composite shape");
                 
             }else{
-                currentCompositeShape.compose(selectedShape);
                 mLabel.setText("Simple shape added to existing composite shape");
             }
 
@@ -253,19 +253,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 }
             }
         }
-        // if(!res){
-        //     for(CompositeShape cs : myCompositeShapes){
-        //         for(SimpleShape s :cs.getShapes()){
-        //             if(((x-25> s.getX() && x-25 < s.getX() + 50)||(x-25 > s.getX()- 50 && x-25 <  s.getX())) && ((y-25> s.getY() && y-25 < s.getY() + 50)||(y-25 > s.getY()- 50 && y-25 <  s.getY()))){
-        //                 res = true;
-        //                 if(toMove){
-        //                     this.selectedShape = cs;
-        //                 }
-                        
-        //             }
-        //         }
-        //     }
-        // }
 
         return res;
     }
@@ -322,7 +309,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         //move a dragged shape.
         if(selectedShape != null){
             mLabel.setText("Moving " + selectedShape.getType() + " to (" + evt.getX() + "," + evt.getY() + ")");
-            selectedShape.move(evt.getX(), evt.getY());
+            new Move(selectedShape, evt.getX(), evt.getY()).execute();
             redrawMyShapes();
         }
        
@@ -446,7 +433,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             if(!isComposing){
                 isComposing = true;
                 mLabel.setText("Composition on");
-                //mSelected = Shapes.COMPOSITE;
             }else{
                 isComposing = false;
                 mLabel.setText("Composition off");

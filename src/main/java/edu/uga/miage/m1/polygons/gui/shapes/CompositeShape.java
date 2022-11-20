@@ -46,12 +46,14 @@ public class CompositeShape extends SimpleShape{
         
         simpleShapeSelected.move(x,y);
         for(SimpleShape simpleShape : shapes){
-            simpleShape.setX(simpleShape.getX() + xtemp);
-            simpleShape.setY(simpleShape.getY() + ytemp);
+            if (simpleShape != simpleShapeSelected) {
+                simpleShape.setX(simpleShape.getX() + xtemp);
+                simpleShape.setY(simpleShape.getY() + ytemp);
+            }
         }
     }
 
-    public ArrayList<SimpleShape> getShapes() {
+    public List<SimpleShape> getShapes() {
         return shapes;
     }
 

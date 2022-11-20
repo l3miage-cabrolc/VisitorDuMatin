@@ -24,7 +24,7 @@ public class XMLVisitor implements Visitor, Serializable {
     private String representation;
 
     public XMLVisitor() {
-        this.representation = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
+        this.representation = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class XMLVisitor implements Visitor, Serializable {
     }
     
     public void save(String fileName){
-
+        representation = representation + "</root>";
         File file = new File(fileName);
 
         try( FileWriter fileWriter =  new FileWriter(file)) {
