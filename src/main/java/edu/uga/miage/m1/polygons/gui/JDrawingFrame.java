@@ -23,6 +23,7 @@ import javax.swing.*;
 import edu.uga.miage.m1.polygons.gui.command.Command;
 import edu.uga.miage.m1.polygons.gui.command.DrawShape;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.Parser;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
@@ -191,14 +192,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     public void keyPressed(KeyEvent e) {
         if ((e.getKeyCode() == KeyEvent.VK_Z)) {
-            System.out.println("woot!");
+            
         }
 
-        System.out.println("key pressed");
+       
     }
 
     public void keyReleased(KeyEvent e) {
-        System.out.println("woot!");
+       
     }
 
     public void keyTyped(KeyEvent e) {
@@ -376,9 +377,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             if(option == JFileChooser.APPROVE_OPTION){
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
+               
+
+               
+               myShapes.addAll(Parser.parseJsonFile(file.getName()));
+               redrawMyShapes();
+                
             }else{
                mLabel.setText("Open command canceled");
             }
+
+            
         }
     }
 

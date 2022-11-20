@@ -1,17 +1,86 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+
 public class Parser {
 
     private static final String XML = "xml";
     private static final String JSON = "json";
     
-    private String getFileType(String file){
+    private static String getFileType(String file){
         int index = file.lastIndexOf('.');
         if(index > 0) {
             return file.substring(index + 1);
             }
         return null;
     }
+
+    public static ArrayList<SimpleShape> parseXMLFile(File file){
+
+
+
+        return null;
+    }
+
+
+    public static ArrayList<SimpleShape> parseJsonFile(String filename){
+
+        ArrayList<SimpleShape> result = new ArrayList<>();
+        ShapeFactory shapeFactory = new ShapeFactory();
+
+
+        JSONParser jsonParser = new JSONParser();
+         
+        try (FileReader reader = new FileReader(filename))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONObject jsonObject = (JSONObject) obj;
+
+            Object iterable = jsonObject.get("shapes");
+
+            JSONArray jsonArray = (JSONArray) iterable;
+ 
+            for(Object shapeObject : jsonArray){
+                result.add(parseShape(shapeObject, shapeFactory));
+            }
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args){
+        Parser p = new Parser();
+        System.out.println(p.parseJsonFile(""));
+    }
+
+    private static SimpleShape parseShape(Object shapeObject, ShapeFactory shapeFactory){
+        JSONObject jsonShape = (JSONObject) shapeObject;
+        return shapeFactory.getShape((String)jsonShape.get("type"), Integer.parseInt(jsonShape.get("x").toString()), Integer.parseInt(jsonShape.get("y").toString()));
+    }
+
 
     
 }
