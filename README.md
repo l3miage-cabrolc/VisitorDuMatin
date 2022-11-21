@@ -8,3 +8,5 @@ Click on ***export*** button -> write the filename with the extension needed (js
 (other files not supported)
 # To import a file to the drawing interface #
 Click on ***import*** button -> choose file (json or xml extention)
+# Cancel #
+Click on z to cancel last drawing
