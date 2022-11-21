@@ -1,5 +1,5 @@
 # Visitor #
-###### Move shapes ####
+#### Move shapes ####
 Drag mouse to the position 
 #### Compose shapes into one shape ####
 Click on ***compose***, select the shapes by clicking on them
