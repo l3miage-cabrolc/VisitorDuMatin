@@ -77,7 +77,7 @@ class SquareTest {
 
         visitor.save("/exemple.xml");
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>square</type>\n<x>" + square.getX() +"</x>\n<y>" + square.getY() + "</y>\n</shape>\n</root>", visitor.getRepresentation());
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><shapes><shape><type>square</type><x>" + square.getX() +"</x><y>" + square.getY() + "</y></shape></shapes>", visitor.getRepresentation());
 
     }
 

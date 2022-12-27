@@ -11,7 +11,9 @@ public class ShapeFactory implements Serializable {
             case "triangle":
                 return new Triangle(x, y);
             case "square":
-                return new Square(x, y);            
+                return new Square(x, y);
+            case "soleil":
+                return new Soleil(x, y);            
             default:
                 return null;
         }

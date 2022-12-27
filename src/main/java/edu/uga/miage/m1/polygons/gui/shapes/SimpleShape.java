@@ -5,6 +5,12 @@ import java.io.Serializable;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.shapes.api.Movable;
+import java.awt.Image;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 
 /**
@@ -61,7 +67,16 @@ public abstract class SimpleShape implements Movable, Serializable{
     }
 
 
-    public abstract void draw(Graphics2D g2);
+    public void draw(Graphics2D g2) {
+        Image bImg;
+        try {
+            bImg = ImageIO.read(new File("src/main/resources/edu/uga/miage/m1/polygons/gui/images/"+ getType() + ".png"));
+            g2.drawImage(bImg, x, y, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
 
     public boolean isSelected(int x, int y){
         return ((x-25 > getX()-50) && (x-25<getX()+50)) && ((y-25 > getY()-50) && (y-25<getY()+50));

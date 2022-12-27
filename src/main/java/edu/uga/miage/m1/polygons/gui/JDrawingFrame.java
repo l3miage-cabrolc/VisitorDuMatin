@@ -40,7 +40,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener, KeyListener {
 
     private enum Shapes {
-        SQUARE, TRIANGLE, CIRCLE, COMPOSITE
+        SQUARE, TRIANGLE, CIRCLE, COMPOSITE, SOLEIL
     }
 
 
@@ -129,6 +129,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(Shapes.SQUARE, new ImageIcon(getClass().getResource("images/square.png")));
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
+        addShape(Shapes.SOLEIL, new ImageIcon(getClass().getResource("images/soleil.png")));
         setPreferredSize(new Dimension(400, 400));
        
         //add persistence buttons 
@@ -316,8 +317,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     private void redrawMyShapes(){
-
         repaint();
+
         Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
        
         SwingUtilities.invokeLater(() -> {
@@ -436,6 +437,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }else{
                 isComposing = false;
                 mLabel.setText("Composition off");
+                currentCompositeShape.accept(xmlVisitor);
             }
         }
     }

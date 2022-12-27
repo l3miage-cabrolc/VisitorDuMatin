@@ -1,13 +1,28 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+
 
 
 /**
@@ -15,49 +30,119 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
  */
 public class XMLVisitor implements Visitor, Serializable {
 
-    private static final String BEGIN_REPR = "<shape>\n<type>";
-    private static final String MIDDLE_REPR = "</x>\n<y>";
-    private static final String END_REPR = "</y>\n</shape>\n";
     
     private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
-    private String representation;
+    private Document document;
+
+    private Element root;
+
+    private Element currComposite;
 
     public XMLVisitor() {
-        this.representation = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n";
+        
+
+        try {
+ 
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+    
+            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+    
+            document = documentBuilder.newDocument();
+    
+            // root element
+            root = document.createElement("shapes");
+            document.appendChild(root);
+    
+    
+        } catch (ParserConfigurationException pce) {
+            LOGGER.log(Level.SEVERE, "Error parsing");
+        }
     }
+
 
     @Override
     public void visit(SimpleShape simpleShape) {
-        representation = representation + BEGIN_REPR + simpleShape.getType() + "</type>\n<x>" + simpleShape.getX() + MIDDLE_REPR + simpleShape.getY() + END_REPR;
+
+        Element simplaElement = document.createElement("shape");
+        Element type = document.createElement("type");
+        type.setTextContent(simpleShape.getType());
+        Element x = document.createElement("x");
+        Element y = document.createElement("y");
+        x.setTextContent(simpleShape.getX()+"");
+        y.setTextContent(simpleShape.getY()+"");
+        simplaElement.appendChild(type);
+        simplaElement.appendChild(x);
+        simplaElement.appendChild(y);
+
+        if(currComposite==null){
+            root.appendChild(simplaElement);
+        }else{
+            currComposite.appendChild(simplaElement);
+        }
+        
+
     }
-    
+
+    public void visit(CompositeShape compositeShape){
+
+        Element compositeElement = document.createElement("composite");
+        currComposite = compositeElement;
+        for(SimpleShape s: compositeShape.getShapes()){
+            visit(s);
+        }
+
+        root.appendChild(compositeElement);
+        currComposite = null;
+    }
+
+
+
     public void save(String fileName){
-        representation = representation + "</root>";
-        File file = new File(fileName);
-
-        try( FileWriter fileWriter =  new FileWriter(file)) {
-            fileWriter.write(representation);
-            fileWriter.flush();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Erreur d ecriture dans le fichier");
-        }  
+        try (FileOutputStream output = new FileOutputStream(fileName)) {
+            writeXml(document, output);
+        } catch (IOException | TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * @return the representation in JSon example for a Triangle:
-     *
-     *         <pre>
-     * {@code
-     *  <shape>
-     *    <type>triangle</type>
-     *    <x>-25</x>
-     *    <y>-25</y>
-     *  </shape>
-     * }
-     * </pre>
-     */
-    public String getRepresentation() {
-        return representation;
+
+    private static void writeXml(Document doc,
+                                 OutputStream output)
+            throws TransformerException {
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(output);
+
+        transformer.transform(source, result);
+
     }
+
+
+    public String getRepresentation(){
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer;
+        try {
+            transformer = tf.newTransformer();
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            return writer.getBuffer().toString();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
 }
+
+
+
+
+
+
+
+
+

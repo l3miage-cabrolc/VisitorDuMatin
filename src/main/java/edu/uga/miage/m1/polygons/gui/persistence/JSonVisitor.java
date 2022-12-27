@@ -36,7 +36,7 @@ public class JSonVisitor implements Visitor, Serializable {
     }
 
     public void visit(CompositeShape compositeShape){
-        // redefine 
+        // redefine
     }
 
     public void save(String fileName) {

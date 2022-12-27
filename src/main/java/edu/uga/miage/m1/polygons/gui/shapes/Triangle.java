@@ -18,13 +18,6 @@
  */
 package edu.uga.miage.m1.polygons.gui.shapes;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Path2D;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 
@@ -47,28 +40,4 @@ public class Triangle extends SimpleShape implements Visitable {
         return TYPE;
     }
    
-    /**
-     * Implements the <tt>SimpleShape.draw()</tt> method for painting
-     * the shape.
-     * @param g2 The graphics object used for painting.
-     */
-    @Override
-    public void draw(Graphics2D g2) {
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint(x, y, Color.GREEN, (float)x + 50, y, Color.WHITE);
-        g2.setPaint(gradient);
-        int[] xcoords = { x + 25, x, x + 50 };
-        int[] ycoords = { y, y + 50, y + 50 };
-        GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xcoords.length);
-        polygon.moveTo((float)x + 25, y);
-        for (int i = 0; i < xcoords.length; i++) {
-            polygon.lineTo(xcoords[i], ycoords[i]);
-        }
-        polygon.closePath();
-        g2.fill(polygon);
-        BasicStroke wideStroke = new BasicStroke(2.0f);
-        g2.setColor(Color.black);
-        g2.setStroke(wideStroke);
-        g2.draw(polygon);
-    }
 }

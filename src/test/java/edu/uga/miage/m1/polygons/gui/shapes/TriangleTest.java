@@ -66,7 +66,7 @@ class TriangleTest {
 
         visitor.save("/exemple.xml");
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>triangle</type>\n<x>" + triangle.getX() +"</x>\n<y>" + triangle.getY() + "</y>\n</shape>\n</root>", visitor.getRepresentation());
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><shapes><shape><type>triangle</type><x>" + triangle.getX() +"</x><y>" + triangle.getY() + "</y></shape></shapes>", visitor.getRepresentation());
 
     }
 
