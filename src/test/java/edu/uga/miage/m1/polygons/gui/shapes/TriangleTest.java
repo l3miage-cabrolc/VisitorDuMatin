@@ -33,6 +33,8 @@ class TriangleTest {
 			}
 
 			public void save(String fileName){}
+
+			public void visit(CompositeShape compositeShape){}
 			
 			
 		};
@@ -78,4 +80,6 @@ class TriangleTest {
 		assertEquals(25, triangle.getX());
 		assertEquals(25, triangle.getY());
 	}
+
+	 
 }

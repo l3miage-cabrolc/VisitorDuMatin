@@ -45,6 +45,8 @@ class SquareTest {
             }
             @Override
             public void save(String fileame){}
+
+            public void visit(CompositeShape compositeShape){}
             
         };
         

@@ -84,6 +84,7 @@ public class XMLVisitor implements Visitor, Serializable {
 
     }
 
+    @Override
     public void visit(CompositeShape compositeShape){
 
         Element compositeElement = document.createElement("composite");

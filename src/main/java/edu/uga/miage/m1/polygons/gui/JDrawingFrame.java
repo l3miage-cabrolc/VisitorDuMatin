@@ -215,16 +215,22 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         if(isSelectingShape(evt.getX(), evt.getY(), false) && isComposing){
             
             if(currentCompositeShape == null){
+
                 currentCompositeShape = shapeFactory.getCompositeShape();
+
+                Compose compose = new Compose(currentCompositeShape, myShapes);
+                compose.setSimpleShape(selectedShape);
+                compose.execute();
+
                 mLabel.setText("Simple shape added to a new composite shape");
                 
             }else{
                 mLabel.setText("Simple shape added to existing composite shape");
+
+                currentCompositeShape.addShape(selectedShape);
             }
 
-            Compose compose = new Compose(currentCompositeShape, myShapes);
-            compose.setSimpleShape(selectedShape);
-            compose.execute();
+            
             new EraseShape(selectedShape, myShapes).execute();
         }
         
@@ -234,8 +240,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
             new DrawShape(shape, myShapes).execute();
 
-            shape.accept(jsonVisitor);
-            shape.accept(xmlVisitor);
+            // shape.accept(jsonVisitor);
+            // shape.accept(xmlVisitor);
 
             redrawMyShapes();
 
@@ -385,9 +391,15 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
                if(Parser.getFileType(file.getName()).equals("xml")){
+                for(SimpleShape s : myShapes){
+                    s.accept(xmlVisitor);
+                }
                 xmlVisitor.save(file.getPath());
                }
                if(Parser.getFileType(file.getName()).equals("json")){
+                for(SimpleShape s : myShapes){
+                    s.accept(jsonVisitor);
+                }
                 jsonVisitor.save(file.getPath());
                }
                

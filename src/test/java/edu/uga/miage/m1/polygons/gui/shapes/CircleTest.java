@@ -45,6 +45,8 @@ class CircleTest {
 				counterVisitorCircle++;			
 			}
 
+			public void visit(CompositeShape compositeShape){}
+
 			@Override
 			public void save(String fileName){}
 

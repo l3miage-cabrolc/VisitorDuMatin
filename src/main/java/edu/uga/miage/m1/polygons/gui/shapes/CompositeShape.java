@@ -4,9 +4,12 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
+
 public class CompositeShape extends SimpleShape{
 
     public static final String TYPE = "composite";
+
 
 
     private SimpleShape simpleShapeSelected;
@@ -16,6 +19,11 @@ public class CompositeShape extends SimpleShape{
     public CompositeShape(){
         super(0, 0);
         this.shapes = new ArrayList<>();
+    }
+
+    @Override
+    public void accept(Visitor v){
+        v.visit(this);
     }
 
     public void compose(SimpleShape shape){
@@ -67,5 +75,10 @@ public class CompositeShape extends SimpleShape{
             }
         }
         return false;
+    }
+
+
+    public void addShape(SimpleShape s){
+        shapes.add(s);
     }
 }
