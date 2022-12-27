@@ -53,7 +53,7 @@ class TriangleTest {
 
         visitor.save("/exemple.json");
 
-        assertEquals("{\"shapes\" : [\n{\n\"type\": \"triangle\",\n\"x\": " + t.getX() + ",\n\"y\": " + t.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
+        assertEquals("{\"shapes\":[{\"type\":\"triangle\",\"x\":" + t.getX() + ",\"y\":" + t.getY() + "}" +  "]}", visitor.getRepresentation().toString());
     }
 
 

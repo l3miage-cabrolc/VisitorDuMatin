@@ -19,7 +19,7 @@ class JSonVisitorTest {
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
 		String expectedRepresentation = 
-				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "circle", c.getX(), c.getY());
+				String.format("{\"shapes\":[{\"type\":\"%s\",\"x\":%d,\"y\":%d}]}", "circle", c.getX(), c.getY());
 	
 		
 		JSonVisitor visitor = new JSonVisitor();
@@ -37,7 +37,7 @@ class JSonVisitorTest {
 	void test_triangle_visitor() {
 		var t = new Triangle(0, 0);
 		String expectedRepresentation = 
-				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "triangle", t.getX(), t.getY());
+				String.format("{\"shapes\":[{\"type\":\"%s\",\"x\":%d,\"y\":%d}]}", "triangle", t.getX(), t.getY());
 		
 		JSonVisitor visitor = new JSonVisitor();
 		t.accept(visitor);
@@ -53,7 +53,7 @@ class JSonVisitorTest {
 	void test_square_visitor() {
 		var s = new Square(0, 0);
 		String expectedRepresentation = 
-				String.format("{\"shapes\" : [\n{\n\"type\": \"%s\",\n\"x\": %d,\n\"y\": %d\n}] }", "square", s.getX(), s.getY());
+				String.format("{\"shapes\":[{\"type\":\"%s\",\"x\":%d,\"y\":%d}]}", "square", s.getX(), s.getY());
 
 		
 		JSonVisitor visitor = new JSonVisitor();

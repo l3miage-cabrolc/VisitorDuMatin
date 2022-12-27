@@ -19,7 +19,7 @@ class XMLVisitorTest {
 	void test_circle_visitor() {
 		var c = new Circle(0, 0);
 		String expectedRepresentation = 
-				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>\n</root>", "circle", c.getX(), c.getY());
+				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><shapes><shape><type>%s</type><x>%d</x><y>%d</y></shape></shapes>", "circle", c.getX(), c.getY());
 		XMLVisitor visitor = new XMLVisitor();
 		c.accept(visitor);
 		
@@ -36,7 +36,7 @@ class XMLVisitorTest {
 	void test_triangle_visitor() {
 		var t = new Triangle(0, 0);
 		String expectedRepresentation = 
-				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>\n</root>", "triangle", t.getX(), t.getY());
+				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><shapes><shape><type>%s</type><x>%d</x><y>%d</y></shape></shapes>", "triangle", t.getX(), t.getY());
 		
 		XMLVisitor visitor = new XMLVisitor();
 		t.accept(visitor);
@@ -53,7 +53,7 @@ class XMLVisitorTest {
 	void test_square_visitor() {
 		var t = new Square(0,0);
 		String expectedRepresentation = 
-				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>\n<shape>\n<type>%s</type>\n<x>%d</x>\n<y>%d</y>\n</shape>\n</root>", "square", t.getX(), t.getY());
+				String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><shapes><shape><type>%s</type><x>%d</x><y>%d</y></shape></shapes>", "square", t.getX(), t.getY());
 		
 		XMLVisitor visitor = new XMLVisitor();
 		t.accept(visitor);

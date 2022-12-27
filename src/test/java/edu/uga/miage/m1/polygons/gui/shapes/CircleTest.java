@@ -66,7 +66,7 @@ class CircleTest {
 
 		visitor.save("/exemple.json");
 
-		assertEquals("{\"shapes\" : [\n{\n\"type\": \"circle\",\n\"x\": " + c.getX() + ",\n\"y\": " + c.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
+		assertEquals("{\"shapes\":[{\"type\":\"circle\",\"x\":" + c.getX() + ",\"y\":" + c.getY() + "}" +  "]}", visitor.getRepresentation().toString());
 	}
 
 

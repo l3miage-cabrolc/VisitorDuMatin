@@ -64,7 +64,7 @@ class SquareTest {
 
         visitor.save("/exemple.json");
 
-        assertEquals("{\"shapes\" : [\n{\n\"type\": \"square\",\n\"x\": " + s.getX() + ",\n\"y\": " + s.getY() + "\n}" +  "] }", visitor.getRepresentation().toString());
+        assertEquals("{\"shapes\":[{\"type\":\"square\",\"x\":" + s.getX() + ",\"y\":" + s.getY() + "}" +  "]}", visitor.getRepresentation().toString());
     }
 
 

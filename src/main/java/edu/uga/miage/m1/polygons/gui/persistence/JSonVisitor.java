@@ -1,12 +1,14 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.json.simple.JSONObject;
 
 import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
@@ -20,38 +22,68 @@ public class JSonVisitor implements Visitor, Serializable {
     private static  final Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
 
-    ArrayList<SimpleShape> listOfShapes;
+    private transient LinkedHashMap<String,Object> currentComposite;
 
-    private StringBuilder representation = null;
+    private  transient ArrayList<LinkedHashMap<String, Object>> currentSimpleShapes;
+
+    private  transient LinkedHashMap<String, Object> shapes;
+
+    private transient ArrayList<LinkedHashMap<String, Object>> simpleShapes;
 
     public JSonVisitor() {
-    	
-    	this.representation = new StringBuilder();
-        this.listOfShapes = new ArrayList<>();
+
+
+        simpleShapes = new ArrayList<>();
+        shapes = new LinkedHashMap<>();
 
     }
     
     public void visit(SimpleShape simpleShape) {
-        listOfShapes.add(simpleShape);
+
+        LinkedHashMap<String, Object> shape = new LinkedHashMap<>();
+
+
+        shape.put("type", simpleShape.getType());
+
+        shape.put("x", simpleShape.getX());
+        shape.put("y", simpleShape.getY());
+       
+        if(currentComposite==null){
+            simpleShapes.add(shape);
+        }else{
+            currentSimpleShapes.add(shape);
+        }
+        
     }
 
+    @Override
     public void visit(CompositeShape compositeShape){
-        // redefine
+        currentComposite = new LinkedHashMap<>();
+        currentSimpleShapes = new ArrayList<>();
+
+        for(SimpleShape s : compositeShape.getShapes()){
+            visit(s);
+        }
+        currentComposite.put("composite", currentSimpleShapes);
+
+        simpleShapes.add(currentComposite);
+
+        currentComposite = null;
+        currentSimpleShapes = null;
     }
 
     public void save(String fileName) {
-        File file = new File(fileName);
-        for(int i=0; i < listOfShapes.size()-1; i++){
-           representation.append(representation + "{\n\"type\": \"" + listOfShapes.get(i).getType() + "\",\n\"x\": " + listOfShapes.get(i).getX() + ",\n\"y\": " + listOfShapes.get(i).getY() + "\n},");
-        }
 
-       representation.insert(0, "{\"shapes\" : [\n" );
-       representation.append("{\n\"type\": \"" + listOfShapes.get(listOfShapes.size()-1).getType() + "\",\n\"x\": " + listOfShapes.get(listOfShapes.size()-1).getX() + ",\n\"y\": " + listOfShapes.get(listOfShapes.size()-1).getY() + "\n}" +  "] }");
-        try(FileWriter fileWriter = new FileWriter(file)) {
-            fileWriter.write(representation.toString());
-            fileWriter.flush();
+        shapes.put("shapes", simpleShapes);
+
+        JSONObject jsonShapes = new JSONObject(shapes);
+
+        try (FileWriter file = new FileWriter(fileName)) {
+            file.write(jsonShapes.toJSONString()); 
+            file.flush();
+ 
         } catch (IOException e) {
-           LOGGER.log(Level.SEVERE, "Erreur d ecriture dans le fichier");
+            LOGGER.log(Level.SEVERE, "error");
         }
         
     }
@@ -72,8 +104,13 @@ public class JSonVisitor implements Visitor, Serializable {
      *         </pre>
      */
     public String getRepresentation() {
-        return representation.toString();
+
+        JSONObject jsonShapes = new JSONObject(shapes);
+
+        return jsonShapes.toJSONString();
     }
+
+
 
   
 }

@@ -33,11 +33,11 @@ public class XMLVisitor implements Visitor, Serializable {
     
     private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
-    private Document document;
+    private transient Document document;
 
-    private Element root;
+    private transient Element root;
 
-    private Element currComposite;
+    private transient Element currComposite;
 
     public XMLVisitor() {
         
@@ -103,7 +103,7 @@ public class XMLVisitor implements Visitor, Serializable {
         try (FileOutputStream output = new FileOutputStream(fileName)) {
             writeXml(document, output);
         } catch (IOException | TransformerException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "ERREUR");
         }
     }
 
@@ -124,6 +124,7 @@ public class XMLVisitor implements Visitor, Serializable {
 
     public String getRepresentation(){
         TransformerFactory tf = TransformerFactory.newInstance();
+        
         Transformer transformer;
         try {
             transformer = tf.newTransformer();

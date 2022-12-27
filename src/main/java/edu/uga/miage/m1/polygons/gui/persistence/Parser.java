@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +29,9 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 public class Parser {
 
     private Parser(){}
+
+    private static final  Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
+
 
     private static final String XML = "xml";
     private static final String JSON = "json";
@@ -72,12 +78,10 @@ public class Parser {
             }
 
         } catch (ParserConfigurationException e1) {
-            e1.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            LOGGER.log(Level.SEVERE, "ERREUR");
+        } catch (SAXException | IOException  e) {
+            LOGGER.log(Level.SEVERE, "ERREUR");
+        } 
 
         
         
@@ -109,7 +113,7 @@ public class Parser {
                 result.add(parseShape(shapeObject, shapeFactory));
             }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "ERREUR");
         }
     
         return result;
