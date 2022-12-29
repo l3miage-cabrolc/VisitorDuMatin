@@ -1,5 +1,8 @@
 package edu.uga.miage.m1.polygons.gui.shapes;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
@@ -35,7 +38,10 @@ class TriangleTest {
 			public void save(String fileName){}
 
 			public void visit(CompositeShape compositeShape){}
-			
+			@Override
+			public List<SimpleShape> importFile(String filename){
+				return null;
+			}
 			
 		};
 		

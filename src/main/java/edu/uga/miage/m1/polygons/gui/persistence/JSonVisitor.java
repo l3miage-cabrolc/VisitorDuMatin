@@ -1,16 +1,22 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
+import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
 /**
@@ -23,6 +29,9 @@ public class JSonVisitor implements Visitor, Serializable {
 
 
     private transient LinkedHashMap<String,Object> currentComposite;
+
+
+    private List<SimpleShape> importResult;
 
     private  transient ArrayList<LinkedHashMap<String, Object>> currentSimpleShapes;
 
@@ -88,6 +97,56 @@ public class JSonVisitor implements Visitor, Serializable {
         
     }
 
+
+    public List<SimpleShape> importFile(String filename){
+        
+        importResult = new ArrayList<>();
+        ShapeFactory shapeFactory = new ShapeFactory();
+
+
+        JSONParser jsonParser = new JSONParser();
+         
+        FileReader reader;
+        try {
+            reader = new FileReader(filename);
+            Object obj = jsonParser.parse(reader);
+
+            JSONObject jsonObject = (JSONObject) obj;
+
+            Object iterable = jsonObject.get("shapes");
+
+            JSONArray jsonArray = (JSONArray) iterable;
+ 
+            for(Object shapeObject : jsonArray){
+                parseShape(shapeObject, shapeFactory);
+            }
+        } catch (IOException | ParseException e) {
+            LOGGER.log(Level.SEVERE, "ERREUR");
+        }
+    
+        return importResult;
+    }
+
+    private void parseShape(Object shapeObject, ShapeFactory shapeFactory){
+
+        
+        JSONObject jsonShape = (JSONObject) shapeObject;
+
+        if(jsonShape.get("type")!=null){
+            importResult.add(shapeFactory.getShape((String)jsonShape.get("type"), Integer.parseInt(jsonShape.get("x").toString()), Integer.parseInt(jsonShape.get("y").toString())));
+        }else{
+            Object iterable = jsonShape.get("composite");
+            JSONArray jsonArray = (JSONArray) iterable;
+            CompositeShape newComposite = shapeFactory.getCompositeShape();
+            for(Object simpleS : jsonArray){
+                JSONObject jsonS = (JSONObject) simpleS;
+                SimpleShape s = shapeFactory.getShape((String)jsonS.get("type"), Integer.parseInt(jsonS.get("x").toString()), Integer.parseInt(jsonS.get("y").toString()));
+                newComposite.addShape(s);
+            }
+            importResult.add(newComposite);
+        }
+    }
+
     /**
      * @return the representation in JSon example for a Circle
      *
@@ -111,6 +170,6 @@ public class JSonVisitor implements Visitor, Serializable {
     }
 
 
-
+    
   
 }

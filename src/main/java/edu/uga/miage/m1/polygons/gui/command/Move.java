@@ -20,4 +20,13 @@ public class Move implements Command{
         simpleShape.move(x, y);
         
     }
+    @Override
+    public void cancel(){
+        simpleShape.move(-x,-y);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName();
+    }
 }

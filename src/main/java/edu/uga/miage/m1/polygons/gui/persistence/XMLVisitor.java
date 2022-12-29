@@ -1,13 +1,17 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,8 +23,12 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
+import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
 
@@ -52,7 +60,7 @@ public class XMLVisitor implements Visitor, Serializable {
     
             // root element
             root = document.createElement("shapes");
-            document.appendChild(root);
+            
     
     
         } catch (ParserConfigurationException pce) {
@@ -100,6 +108,7 @@ public class XMLVisitor implements Visitor, Serializable {
 
 
     public void save(String fileName){
+        document.appendChild(root);
         try (FileOutputStream output = new FileOutputStream(fileName)) {
             writeXml(document, output);
         } catch (IOException | TransformerException e) {
@@ -108,7 +117,7 @@ public class XMLVisitor implements Visitor, Serializable {
     }
 
 
-    private static void writeXml(Document doc,
+    private void writeXml(Document doc,
                                  OutputStream output)
             throws TransformerException {
 
@@ -136,6 +145,51 @@ public class XMLVisitor implements Visitor, Serializable {
         }
         
         return null;
+    }
+
+    public List<SimpleShape> importFile(String fileName){
+
+        ArrayList<SimpleShape> result = new ArrayList<>();
+
+        ShapeFactory shapeFactory = new ShapeFactory();
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+
+        try {
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new File(fileName));
+
+            doc.getDocumentElement().normalize();
+
+            NodeList list = doc.getElementsByTagName("shape");
+
+            for (int temp = 0; temp < list.getLength(); temp++){
+                Node node = list.item(temp);
+                if (node.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) node;
+
+                    String type = element.getElementsByTagName("type").item(0).getTextContent();
+
+                    int x = Integer.parseInt(element.getElementsByTagName("x").item(0).getTextContent());
+                    int y = Integer.parseInt(element.getElementsByTagName("y").item(0).getTextContent());
+
+                    result.add(shapeFactory.getShape(type, x, y));
+
+                }
+            }
+
+        } catch (ParserConfigurationException e) {
+            LOGGER.log(Level.SEVERE, "ERREUR PARSER");
+        } catch (SAXException | IOException  e) {
+            LOGGER.log(Level.SEVERE, "ERREUR FICHIER");
+        } 
+
+        
+        
+
+        return result;
     }
 
 }

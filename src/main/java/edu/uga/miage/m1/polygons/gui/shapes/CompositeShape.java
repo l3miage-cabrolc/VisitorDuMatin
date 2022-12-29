@@ -26,9 +26,6 @@ public class CompositeShape extends SimpleShape{
         v.visit(this);
     }
 
-    public void compose(SimpleShape shape){
-        this.shapes.add(shape);
-    }
 
     public void addAllShapes(List<SimpleShape> shapes){
         this.shapes.addAll(shapes);
@@ -80,5 +77,9 @@ public class CompositeShape extends SimpleShape{
 
     public void addShape(SimpleShape s){
         shapes.add(s);
+    }
+
+    public void removeShape(SimpleShape s){
+        shapes.remove(s);
     }
 }

@@ -20,4 +20,13 @@ public class DrawShape implements Command{
         shapes.add(shape);
     }
     
+    @Override
+    public void cancel() {
+        shapes.remove(shape);
+        
+    }
+    @Override
+    public String toString() {
+        return getClass().getName();
+    }
 }

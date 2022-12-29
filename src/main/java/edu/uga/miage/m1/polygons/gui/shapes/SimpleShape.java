@@ -82,4 +82,21 @@ public abstract class SimpleShape implements Movable, Serializable{
         return ((x-25 > getX()-50) && (x-25<getX()+50)) && ((y-25 > getY()-50) && (y-25<getY()+50));
     }
 
+
+   @Override
+   public boolean equals(Object obj) {
+       SimpleShape s = (SimpleShape) obj;
+       if(s!=null){
+        return s.getType().equals(getType()) && s.getX()==getX() && s.getY()==getY();
+       }
+       return false;
+   }
+
+
+   @Override
+   public String toString() {
+       return getType() + getX() + getY();
+   }
+
+
 }

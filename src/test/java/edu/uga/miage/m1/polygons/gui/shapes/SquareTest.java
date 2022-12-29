@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -47,6 +49,11 @@ class SquareTest {
             public void save(String fileame){}
 
             public void visit(CompositeShape compositeShape){}
+
+            @Override
+			public List<SimpleShape> importFile(String filename){
+				return null;
+			}
             
         };
         

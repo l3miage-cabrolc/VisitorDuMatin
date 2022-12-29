@@ -1,5 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import java.util.List;
+
 import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 
@@ -14,4 +16,6 @@ public interface Visitor {
     public void visit(CompositeShape compositeShape);
 
     public void save(String fileNameString);
+
+    public List<SimpleShape> importFile(String filename);
 }

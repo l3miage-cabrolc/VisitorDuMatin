@@ -13,7 +13,7 @@ public class ShapeFactory implements Serializable {
             case "square":
                 return new Square(x, y);
             case "soleil":
-                return new Soleil(x, y);            
+                return new Soleil(x, y);
             default:
                 return null;
         }

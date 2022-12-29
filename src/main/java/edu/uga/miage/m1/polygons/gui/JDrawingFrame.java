@@ -16,15 +16,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.*;
 
+import edu.uga.miage.m1.polygons.gui.command.Command;
 import edu.uga.miage.m1.polygons.gui.command.Compose;
 import edu.uga.miage.m1.polygons.gui.command.DrawShape;
-import edu.uga.miage.m1.polygons.gui.command.EraseShape;
 import edu.uga.miage.m1.polygons.gui.command.Move;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
-import edu.uga.miage.m1.polygons.gui.persistence.Parser;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
 import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
@@ -75,14 +75,20 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     
     
     // Visitors 
-    private static JSonVisitor jsonVisitor = new JSonVisitor();
-    private static XMLVisitor xmlVisitor = new XMLVisitor();
+    private JSonVisitor jsonVisitor = new JSonVisitor();
+    private XMLVisitor xmlVisitor = new XMLVisitor();
     /**
      * Tracks buttons to manage the background.
      */
     private EnumMap<Shapes, JButton> mButtons = new EnumMap<>(Shapes.class);
 
     private CompositeShape currentCompositeShape;
+
+
+
+    // commands 
+
+    private transient List<Command> commands;
 
     /**
      * Default constructor that populates the main window.
@@ -137,6 +143,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addExport();
         addCompose();
 
+        //comaands 
+
+        commands = new ArrayList<>();
+
     
     }
 
@@ -181,9 +191,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     public void keyPressed(KeyEvent e) {
         if ((e.getKeyCode() == KeyEvent.VK_Z)) {
-            mLabel.setText("Erase " + myShapes.get(myShapes.size()-1).getType());
-            EraseShape eraseShape = new EraseShape(myShapes.get(myShapes.size()-1), myShapes);
-            eraseShape.execute();
+            Command cancel = commands.get(commands.size()-1);
+            mLabel.setText("Cancel " + cancel);
+
+            cancel.cancel();
             redrawMyShapes();
         }
         if(myShapes.isEmpty()){
@@ -217,32 +228,30 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             if(currentCompositeShape == null){
 
                 currentCompositeShape = shapeFactory.getCompositeShape();
-
-                Compose compose = new Compose(currentCompositeShape, myShapes);
-                compose.setSimpleShape(selectedShape);
-                compose.execute();
+                myShapes.add(currentCompositeShape);
+                
 
                 mLabel.setText("Simple shape added to a new composite shape");
                 
             }else{
-                mLabel.setText("Simple shape added to existing composite shape");
-
-                currentCompositeShape.addShape(selectedShape);
+                mLabel.setText("Simple shape added to existing composite shape");                
             }
 
+            Compose compose = new Compose(currentCompositeShape, myShapes, selectedShape);
+            compose.execute();
             
-            new EraseShape(selectedShape, myShapes).execute();
-        }
+            commands.add(compose);
+
+            }
         
         if (mPanel.contains(evt.getX(), evt.getY()) && !isSelectingShape(evt.getX(), evt.getY(), false)) {
 
             SimpleShape shape = shapeFactory.getShape(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
 
-            new DrawShape(shape, myShapes).execute();
+            DrawShape draw = new DrawShape(shape, myShapes);
+            draw.execute();
 
-            // shape.accept(jsonVisitor);
-            // shape.accept(xmlVisitor);
-
+            commands.add(draw);
             redrawMyShapes();
 
             mLabel.setText("New " + shape.getType());
@@ -316,7 +325,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         //move a dragged shape.
         if(selectedShape != null){
             mLabel.setText("Moving " + selectedShape.getType() + " to (" + evt.getX() + "," + evt.getY() + ")");
-            new Move(selectedShape, evt.getX(), evt.getY()).execute();
+            Move move = new Move(selectedShape, evt.getX(), evt.getY());
+            move.execute();
+            commands.add(move);
             redrawMyShapes();
         }
        
@@ -385,18 +396,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            JFileChooser fileChooser = new JFileChooser(".");
             int option = fileChooser.showSaveDialog(frame);
             if(option == JFileChooser.APPROVE_OPTION){
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
-               if(Parser.getFileType(file.getName()).equals("xml")){
+               if(getFileType(file.getName()).equals("xml")){
                 for(SimpleShape s : myShapes){
                     s.accept(xmlVisitor);
                 }
                 xmlVisitor.save(file.getPath());
                }
-               if(Parser.getFileType(file.getName()).equals("json")){
+               if(getFileType(file.getName()).equals("json")){
                 for(SimpleShape s : myShapes){
                     s.accept(jsonVisitor);
                 }
@@ -420,12 +431,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         @Override
         public void actionPerformed(ActionEvent e){
-            JFileChooser fileChooser = new JFileChooser("/Users/begimaykonushbaeva/Desktop/M1/PC/Persistence/git");
+            JFileChooser fileChooser = new JFileChooser(".");
             int option = fileChooser.showOpenDialog(frame);
             if(option == JFileChooser.APPROVE_OPTION){
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
-               myShapes.addAll(Parser.importFrom(file.getName()));
+
+               if(getFileType(file.getName()).equals("json")){
+                    myShapes.addAll(jsonVisitor.importFile(file.getName()));
+               }
+               if(getFileType(file.getName()).equals("xml")){
+                    myShapes.addAll(xmlVisitor.importFile(file.getName()));
+               }
                redrawMyShapes();
                 
             }else{
@@ -434,7 +451,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
             
         }
+
+
     }
+
+    private static String getFileType(String file){
+        int index = file.lastIndexOf('.');
+        if(index > 0) {
+            return file.substring(index + 1);
+            }
+        return "";
+    }
+
 
     private class ComposeListener implements ActionListener, Serializable{
 

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -49,6 +51,11 @@ class CircleTest {
 
 			@Override
 			public void save(String fileName){}
+
+			@Override
+			public List<SimpleShape> importFile(String filename){
+				return null;
+			}
 
 		};
 		

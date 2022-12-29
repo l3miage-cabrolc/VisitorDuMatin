@@ -11,3 +11,11 @@ Click on ***export*** button -> write the filename with the extension needed (js
 Click on ***import*** button -> choose file (json or xml extention)
 #### Cancel ####
 Click on z to cancel last drawing
+
+#### Json File format for import and export 
+
+{"shapes":[{"type":"circle","x":60,"y":110},{"composite":[{"type":"soleil","x":272,"y":103},{"type":"triangle","x":168,"y":187}]}]}
+
+#### XML file format for import and export 
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><shapes><composite><shape><type>circle</type><x>102</x><y>75</y></shape><shape><type>soleil</type><x>230</x><y>87</y></shape></composite><composite><shape><type>circle</type><x>102</x><y>75</y></shape><shape><type>soleil</type><x>230</x><y>87</y></shape></composite></shapes>
