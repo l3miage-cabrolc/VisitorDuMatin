@@ -2,20 +2,19 @@ package edu.uga.miage.m1.polygons.gui.command;
 
 import java.util.List;
 
-import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
-
+import edu.uga.miage.m1.polygons.gui.Myshapes.MyComposite;
+import edu.uga.miage.m1.polygons.gui.Myshapes.MySimpleShape;
 public class Compose implements Command{
 
 
-    private CompositeShape compositeShape;
+    private MyComposite compositeShape;
 
-    private List<SimpleShape> shapes;
+    private List<MySimpleShape> shapes;
 
-    private SimpleShape simpleShape;
+    private MySimpleShape simpleShape;
 
 
-    public Compose(CompositeShape compositeShape, List<SimpleShape> shapes, SimpleShape simpleShape){
+    public Compose(MyComposite compositeShape, List<MySimpleShape> shapes, MySimpleShape simpleShape){
         this.compositeShape = compositeShape;
         this.shapes = shapes;
         this.simpleShape = simpleShape;
@@ -23,15 +22,15 @@ public class Compose implements Command{
 
     @Override
     public void execute() {
-        this.compositeShape.addShape(simpleShape);
-        shapes.remove(simpleShape);
+        // this.compositeShape.addShape(simpleShape);
+        // shapes.remove(simpleShape);
 
     }
 
     @Override
     public void cancel() {
-       this.compositeShape.removeShape(simpleShape);
-        shapes.add(simpleShape);
+    //    this.compositeShape.removeShape(simpleShape);
+    //     shapes.add(simpleShape);
     }
 
     @Override

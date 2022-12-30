@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -26,9 +27,20 @@ import edu.uga.miage.m1.polygons.gui.command.DrawShape;
 import edu.uga.miage.m1.polygons.gui.command.Move;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
-import edu.uga.miage.m1.polygons.gui.shapes.CompositeShape;
-import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+//import edu.uga.miage.m1.polygons.gui.shapes.ShapeFactory;
+
+import edu.uga.miage.m1.polygons.gui.Myshapes.MyShapeFactory;
+
+import edu.uga.miage.m1.polygons.gui.Myshapes.MySimpleShape;
+
+import edu.uga.miage.m1.polygons.gui.Myshapes.MyShape;
+
+
+import edu.uga.miage.m1.polygons.gui.exceptions.InvalidTypeException;
+
+
+
+import edu.uga.miage.m1.polygons.gui.Myshapes.MyComposite;
 
 
 /**
@@ -44,11 +56,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
 
-    private ArrayList<SimpleShape> myShapes;
+    private ArrayList<MySimpleShape> myShapes;
     
-    private SimpleShape selectedShape;
+    private MySimpleShape selectedShape;
 
-    private ShapeFactory shapeFactory;
+    //private ShapeFactory shapeFactory;
 
 
     private static final long serialVersionUID = 1L;
@@ -82,7 +94,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     private EnumMap<Shapes, JButton> mButtons = new EnumMap<>(Shapes.class);
 
-    private CompositeShape currentCompositeShape;
+    private MyComposite currentCompositeShape;
 
 
 
@@ -103,8 +115,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         myShapes = new ArrayList<>();
 
         //Initiate a shape factory
-
-        shapeFactory = new ShapeFactory();
     
         // Instantiates components
         mToolBar = new JToolBar("Toolbar");
@@ -170,9 +180,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Injects an available <tt>SimpleShape</tt> into the drawing frame.
-     * @param name The name of the injected <tt>SimpleShape</tt>.
-     * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
+     * Injects an available <tt>MyShape</tt> into the drawing frame.
+     * @param name The name of the injected <tt>MyShape</tt>.
+     * @param icon The icon associated with the injected <tt>MyShape</tt>.
      */
     private void addShape(Shapes shape, ImageIcon icon) {
         JButton button = new JButton(icon);
@@ -227,8 +237,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             
             if(currentCompositeShape == null){
 
-                currentCompositeShape = shapeFactory.getCompositeShape();
+                currentCompositeShape = null; // TODO : creer un nv composite
                 myShapes.add(currentCompositeShape);
+
+
                 
 
                 mLabel.setText("Simple shape added to a new composite shape");
@@ -246,7 +258,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         
         if (mPanel.contains(evt.getX(), evt.getY()) && !isSelectingShape(evt.getX(), evt.getY(), false)) {
 
-            SimpleShape shape = shapeFactory.getShape(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
+            MySimpleShape shape = MyShapeFactory.createProduct(mSelected.toString().toLowerCase(), evt.getX(), evt.getY());
 
             DrawShape draw = new DrawShape(shape, myShapes);
             draw.execute();
@@ -261,7 +273,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private boolean isSelectingShape(int x, int y, boolean toMove){
         boolean res = false;
-        for(SimpleShape s : myShapes){
+        for(MySimpleShape s : myShapes){
             if(s.isSelected(x, y)){
                 res = true;
                 if(toMove){
@@ -339,8 +351,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
        
         SwingUtilities.invokeLater(() -> {
-            for(SimpleShape s : myShapes){
-                s.draw(g2);   
+            for(MySimpleShape s : myShapes){
+                try {
+                    s.draw(g2);
+                } catch (IOException | InvalidTypeException e) {
+                    e.printStackTrace();
+                }   
             }
         });
         
@@ -402,13 +418,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
                if(getFileType(file.getName()).equals("xml")){
-                for(SimpleShape s : myShapes){
+                for(MySimpleShape s : myShapes){
                     s.accept(xmlVisitor);
                 }
                 xmlVisitor.save(file.getPath());
                }
                if(getFileType(file.getName()).equals("json")){
-                for(SimpleShape s : myShapes){
+                for(MySimpleShape s : myShapes){
                     s.accept(jsonVisitor);
                 }
                 jsonVisitor.save(file.getPath());
@@ -437,13 +453,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                File file = fileChooser.getSelectedFile();
                mLabel.setText("File Selected: " + file.getName());
 
-               if(getFileType(file.getName()).equals("json")){
-                    myShapes.addAll(jsonVisitor.importFile(file.getName()));
-               }
-               if(getFileType(file.getName()).equals("xml")){
-                    myShapes.addAll(xmlVisitor.importFile(file.getName()));
-               }
-               redrawMyShapes();
+            //    if(getFileType(file.getName()).equals("json")){
+            //         myShapes.addAll(jsonVisitor.importFile(file.getName()));
+            //    }
+            //    if(getFileType(file.getName()).equals("xml")){
+            //         myShapes.addAll(xmlVisitor.importFile(file.getName()));
+            //    }
+            //    redrawMyShapes();
                 
             }else{
                mLabel.setText("Open command canceled");

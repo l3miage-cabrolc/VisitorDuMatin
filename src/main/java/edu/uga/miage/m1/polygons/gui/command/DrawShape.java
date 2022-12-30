@@ -3,14 +3,15 @@ package edu.uga.miage.m1.polygons.gui.command;
 
 import java.util.List;
 
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+import edu.uga.miage.m1.polygons.gui.Myshapes.MyShape;
+import edu.uga.miage.m1.polygons.gui.Myshapes.MySimpleShape;
 
 public class DrawShape implements Command{
 
-    SimpleShape shape;
-    List<SimpleShape> shapes;
+    MySimpleShape shape;
+    List<MySimpleShape> shapes;
     
-    public DrawShape(SimpleShape shape, List<SimpleShape> shapes){
+    public DrawShape(MySimpleShape shape, List<MySimpleShape> shapes){
         this.shape = shape;
         this.shapes = shapes;
     }

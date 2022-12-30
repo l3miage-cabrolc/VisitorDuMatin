@@ -1,15 +1,16 @@
 package edu.uga.miage.m1.polygons.gui.command;
 
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+import edu.uga.miage.m1.polygons.gui.Myshapes.MySimpleShape;
+
 
 public class Move implements Command{
 
-    private SimpleShape simpleShape;
+    private MySimpleShape simpleShape;
     
     private int x;
     private int y;
 
-    public Move(SimpleShape simpleShape, int x, int y){
+    public Move(MySimpleShape simpleShape, int x, int y){
         this.simpleShape = simpleShape;
         this.x = x;
         this.y = y;
@@ -17,12 +18,12 @@ public class Move implements Command{
     
     @Override
     public void execute() {
-        simpleShape.move(x, y);
+        simpleShape.moveTo(x, y);
         
     }
     @Override
     public void cancel(){
-        simpleShape.move(-x,-y);
+        simpleShape.moveTo(-x,-y);
     }
 
     @Override

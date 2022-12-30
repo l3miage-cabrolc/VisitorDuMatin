@@ -45,6 +45,11 @@
 			<version>4.6.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>lib</groupId>
+			<artifactId>lib-shapes</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
