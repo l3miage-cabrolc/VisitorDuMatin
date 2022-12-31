@@ -19,3 +19,8 @@ Click on z to cancel last drawing
 #### XML file format for import and export 
 
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><shapes><composite><shape><type>circle</type><x>102</x><y>75</y></shape><shape><type>soleil</type><x>230</x><y>87</y></shape></composite><composite><shape><type>circle</type><x>102</x><y>75</y></shape><shape><type>soleil</type><x>230</x><y>87</y></shape></composite></shapes>
+
+#### Corrections depuis le dernier rendu 
+
+- Les commandes compose et move peuvent etre annulé tout comme la commande draw 
+- La nouvelle shape ajoutée est la shape du soleil
