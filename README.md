@@ -24,6 +24,7 @@ Click on z to cancel last drawing
 
 - Les commandes compose et move peuvent etre annulé tout comme la commande draw 
 - La nouvelle shape ajoutée est la shape du soleil
+- Correction de la gestion des shapes composites dans les fichiers xml et json
 
 #### Adapter Pattern
 
